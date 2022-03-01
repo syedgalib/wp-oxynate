@@ -1,0 +1,20 @@
+{
+    "name": "wp-oxynate/wp-oxynate",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Oxynate\\": "app/"
+        },
+        "files": [ 
+            "helper/const.php", 
+            "helper/functions.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Syed Galib Ahmed",
+            "email": "syedgalibahmed@gmail.com"
+        }
+    ],
+    "require": {}
+}
