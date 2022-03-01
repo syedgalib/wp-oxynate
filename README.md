@@ -1,2 +1,2 @@
-# Simple Todo
-A simple todo app
+# Oxynate
+A blood donation plugin
