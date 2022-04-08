@@ -1,23 +1,23 @@
 <?php
 
-namespace Oxynate\Controller\Admin;
+namespace Oxynate\Controller\Taxonomy;
 
 use Oxynate\Helper;
 
 class Init {
-    
-    /**
-     * Constructor
-     * 
-     * @return void
-     */
-    public function __construct() {
 
-        // Register Controllers
+    /**
+	 * Constuctor
+	 * 
+     * @return void
+	 */
+	public function __construct() {
+
+		// Register Controllers
         $controllers = $this->get_controllers();
         Helper\Serve::register_services( $controllers );
 
-    }
+	}
 
     /**
 	 * Controllers
@@ -26,8 +26,8 @@ class Init {
 	 */
 	protected function get_controllers() {
         return [
-            Menu_Pages\Init::class,
+            Blood_Group::class,
+            Location::class,
         ];
     }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oxynate\Controller\Admin;
+namespace Oxynate\Controller\Admin\Menu_Pages;
 
 use Oxynate\Helper;
 
@@ -26,7 +26,7 @@ class Init {
 	 */
 	protected function get_controllers() {
         return [
-            Menu_Pages\Init::class,
+            Oxynate\Init::class,
         ];
     }
 

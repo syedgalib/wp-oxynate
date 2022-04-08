@@ -49,7 +49,7 @@ abstract class AssetEnqueuer extends Enqueuer {
 	 * @return void
 	 */
 	public function setup_load_min_files() {
-		$this->load_min = apply_filters( 'simple_todo_load_min_files',  WP_OXYNATE_LOAD_MIN_FILES );
+		$this->load_min = apply_filters( 'wp_oxinate_load_min_files',  WP_OXYNATE_LOAD_MIN_FILES );
 	}
 
 	/**
@@ -59,7 +59,7 @@ abstract class AssetEnqueuer extends Enqueuer {
 	 */
 	public function setup_script_version() {
 		$script_version = ( $this->load_min ) ? WP_OXYNATE_SCRIPT_VERSION : md5( time() );
-		$this->script_version = apply_filters( 'simple_todo_script_version', $script_version );
+		$this->script_version = apply_filters( 'wp_oxinate_script_version', $script_version );
 	}
 
 	/**
@@ -68,7 +68,7 @@ abstract class AssetEnqueuer extends Enqueuer {
 	 * @return void
 	 */
 	public function apply_hook_to_scripts() {
-		$this->css_scripts = apply_filters( 'simple_todo_css_scripts', $this->css_scripts );
-		$this->js_scripts = apply_filters( 'simple_todo_js_scripts', $this->js_scripts );
+		$this->css_scripts = apply_filters( 'wp_oxinate_css_scripts', $this->css_scripts );
+		$this->js_scripts = apply_filters( 'wp_oxinate_js_scripts', $this->js_scripts );
 	}
 }

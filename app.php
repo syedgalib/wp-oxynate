@@ -25,7 +25,7 @@ final class Oxynate {
 
     private function get_controllers() {
         return [
-            Controller\Asset\Init::class,
+            Controller\Init::class,
         ];
     }
 
