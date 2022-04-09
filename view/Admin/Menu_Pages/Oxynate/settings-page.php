@@ -5,7 +5,7 @@
 
         <table class="form-table" role="presentation">
             <tbody>
-                <?php foreach ( $data['options'] as $option_key => $option_args ) : ?>
+                <?php foreach( $data['option_fields'] as $option_key => $option_args ) : ?>
                 <tr>
                     <th scope="row">
                         <label for="blogname">

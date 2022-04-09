@@ -33,3 +33,4 @@ defined( 'WP_OXYNATE_USER_META_PHONE' ) || define( 'WP_OXYNATE_USER_META_PHONE',
 defined( 'WP_OXYNATE_USER_META_LOCATION' ) || define( 'WP_OXYNATE_USER_META_LOCATION', '_wp_oxynate_location' );
 defined( 'WP_OXYNATE_USER_META_ADDRESS' ) || define( 'WP_OXYNATE_USER_META_ADDRESS', '_wp_oxynate_address' );
 defined( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER' ) || define( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER', '_wp_oxynate_is_public_contact_number' );
+defined( 'WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION' ) || define( 'WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION', '_wp_oxynate_is_available_for_donation' );

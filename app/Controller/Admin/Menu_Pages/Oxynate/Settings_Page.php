@@ -47,7 +47,7 @@ class Settings_Page {
         }
 
         $data = [
-            'options'         => Settings_Panel_Model::get_options(),
+            'option_fields'   => Settings_Panel_Model::get_option_fields(),
             'fields_template' => Settings_Panel_Fields_Template::class,
         ];
 

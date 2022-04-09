@@ -35,7 +35,9 @@ class Init {
 	 */
 	protected function get_controllers() {
         return [
+            Users::class,
             Donation_Request::class,
+            App_Settings::class,
         ];
     }
 }

@@ -39,3 +39,19 @@ function wp_oxinate_get_wp_labels( $singular = '', $plural = '', $name = '', $ar
 
     return $labels;
 }
+
+
+/**
+ * WP Oxynate Ensure Valid Role
+ * 
+ * @param string $role Role
+ * @return string Role
+ */
+function wp_oxynate_ensure_valid_role( $role = '' ) {
+    $available_roles = wp_roles();
+    $available_roles = ( ! empty( $available_roles ) ) ? array_keys( $available_roles->role_names ) : [];
+
+    $role = ( in_array( $role, $available_roles ) ) ? $role : 'subscriber';
+
+    return $role;
+}

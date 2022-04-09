@@ -27,7 +27,6 @@ class Init {
 	protected function get_controllers() {
         return [
             Asset\Init::class,
-            User\Init::class,
             CPT\Init::class,
             Taxonomy\Init::class,
             Admin\Init::class,

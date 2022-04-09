@@ -24,28 +24,33 @@ class Users extends Rest_Base {
 		register_rest_route( $this->namespace, '/' . $this->rest_base, array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'callback'            => [ $this, 'get_items' ],
+				'permission_callback' => [ $this, 'get_items_permissions_check' ],
 				'args'                => $this->get_collection_params(),
 			),
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'create_item' ),
-				'permission_callback' => array( $this, 'create_item_permissions_check' ),
+				'callback'            => [ $this, 'create_item' ],
+				'permission_callback' => [ $this, 'create_item_permissions_check' ],
 				'args'                => array_merge( $this->get_endpoint_args_for_item_schema( WP_REST_Server::CREATABLE ), array(
+					'role' => array(
+						'required' => false,
+						'type'     => 'string',
+						'description' => __( 'New user role.', 'wp_oxynate' ),
+					),
 					'email' => array(
 						'required' => true,
 						'type'     => 'string',
-						'description' => __( 'New user email address.', 'directorist' ),
+						'description' => __( 'New user email address.', 'wp_oxynate' ),
 					),
 					'username' => array(
 						'required' => false,
-						'description' => __( 'New user username.', 'directorist' ),
+						'description' => __( 'New user username.', 'wp_oxynate' ),
 						'type'     => 'string',
 					),
 					'password' => array(
 						'required' => true,
-						'description' => __( 'New user password.', 'directorist' ),
+						'description' => __( 'New user password.', 'wp_oxynate' ),
 						'type'     => 'string',
 					),
 				) ),
@@ -56,7 +61,7 @@ class Users extends Rest_Base {
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', array(
 			'args' => array(
 				'id' => array(
-					'description' => __( 'Unique identifier for the resource.', 'directorist' ),
+					'description' => __( 'Unique identifier for the resource.', 'wp_oxynate' ),
 					'type'        => 'integer',
 				),
 			),
@@ -82,12 +87,12 @@ class Users extends Rest_Base {
 					'force' => array(
 						'default'     => false,
 						'type'        => 'boolean',
-						'description' => __( 'Required to be true, as resource does not support trashing.', 'directorist' ),
+						'description' => __( 'Required to be true, as resource does not support trashing.', 'wp_oxynate' ),
 					),
 					'reassign' => array(
 						'default'     => 0,
 						'type'        => 'integer',
-						'description' => __( 'ID to reassign posts to.', 'directorist' ),
+						'description' => __( 'ID to reassign posts to.', 'wp_oxynate' ),
 					),
 				),
 			),
@@ -108,7 +113,7 @@ class Users extends Rest_Base {
 		}
 
 		if ( ! $permissions ) {
-			return new WP_Error( 'directorist_rest_cannot_view', __( 'Sorry, you cannot list resources.', 'directorist' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'wp_oxynate_rest_cannot_view', __( 'Sorry, you cannot list resources.', 'wp_oxynate' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return $permissions;
@@ -127,7 +132,7 @@ class Users extends Rest_Base {
 		}
 
 		if ( ! $permissions || ! get_option( 'users_can_register' ) ) {
-			return new WP_Error( 'directorist_rest_cannot_create', __( 'Sorry, you are not allowed to create resources.', 'directorist' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'wp_oxynate_rest_cannot_create', __( 'Sorry, you are not allowed to create resources.', 'wp_oxynate' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return $permissions;
@@ -140,13 +145,16 @@ class Users extends Rest_Base {
 	 * @return WP_Error|boolean
 	 */
 	public function get_item_permissions_check( $request ) {
+
+		return true;
+
 		$permissions = $this->check_permissions( $request, 'read' );
 		if ( is_wp_error( $permissions ) ) {
 			return $permissions;
 		}
 
 		if ( ! $permissions ) {
-			return new WP_Error( 'directorist_rest_cannot_view', __( 'Sorry, you cannot view this resource.', 'directorist' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'wp_oxynate_rest_cannot_view', __( 'Sorry, you cannot view this resource.', 'wp_oxynate' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return $permissions;
@@ -159,13 +167,16 @@ class Users extends Rest_Base {
 	 * @return WP_Error|boolean
 	 */
 	public function update_item_permissions_check( $request ) {
+
+		return true;
+
 		$permissions = $this->check_permissions( $request, 'edit' );
 		if ( is_wp_error( $permissions ) ) {
 			return $permissions;
 		}
 
 		if ( ! $permissions ) {
-			return new WP_Error( 'directorist_rest_cannot_edit', __( 'Sorry, you are not allowed to edit this resource.', 'directorist' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'wp_oxynate_rest_cannot_edit', __( 'Sorry, you are not allowed to edit this resource.', 'wp_oxynate' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return $permissions;
@@ -184,7 +195,7 @@ class Users extends Rest_Base {
 		}
 
 		if ( ! $permissions ) {
-			return new WP_Error( 'directorist_rest_cannot_delete', __( 'Sorry, you are not allowed to delete this resource.', 'directorist' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'wp_oxynate_rest_cannot_delete', __( 'Sorry, you are not allowed to delete this resource.', 'wp_oxynate' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return $permissions;
@@ -204,7 +215,7 @@ class Users extends Rest_Base {
 			$user = get_userdata( $id );
 
 			if ( empty( $user ) ) {
-				return new WP_Error( 'directorist_rest_user_invalid', __( 'Resource does not exist.', 'directorist' ), array( 'status' => 404 ) );
+				return new WP_Error( 'wp_oxynate_rest_user_invalid', __( 'Resource does not exist.', 'wp_oxynate' ), array( 'status' => 404 ) );
 			}
 
 			return $this->rest_check_user_permissions( $context, $user->ID );
@@ -248,11 +259,13 @@ class Users extends Rest_Base {
 		$prepared_args['include'] = $request['include'];
 		$prepared_args['order']   = $request['order'];
 		$prepared_args['number']  = $request['per_page'];
+
 		if ( ! empty( $request['offset'] ) ) {
 			$prepared_args['offset'] = $request['offset'];
 		} else {
 			$prepared_args['offset'] = ( $request['page'] - 1 ) * $prepared_args['number'];
 		}
+
 		$orderby_possibles = $this->get_orderby_possibles();
 		$prepared_args['orderby'] = $orderby_possibles[ $request['orderby'] ];
 		$prepared_args['search']  = $request['search'];
@@ -265,6 +278,17 @@ class Users extends Rest_Base {
 		if ( ! empty( $request['email'] ) ) {
 			$prepared_args['search']         = $request['email'];
 			$prepared_args['search_columns'] = array( 'user_email' );
+		}
+
+		// Filter by email.
+		if ( ! empty( $request['is_available_for_donation'] ) ) {
+			$prepared_args['meta_query'] = [
+				[
+					'key'     => WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION,
+					'value'   => $request['is_available_for_donation'],
+					'compare' => '=',
+				]
+			];
 		}
 
 		// Filter by role.
@@ -280,7 +304,7 @@ class Users extends Rest_Base {
 		 * @param array           $prepared_args Array of arguments for WP_User_Query.
 		 * @param WP_REST_Request $request       The current request.
 		 */
-		$prepared_args = apply_filters( 'directorist_rest_user_query', $prepared_args, $request );
+		$prepared_args = apply_filters( 'wp_oxynate_rest_user_query', $prepared_args, $request );
 
 		$query = new WP_User_Query( $prepared_args );
 
@@ -335,11 +359,11 @@ class Users extends Rest_Base {
 	 */
 	public function create_item( $request ) {
 		if ( ! empty( $request['id'] ) ) {
-			return new WP_Error( 'directorist_rest_user_exists', __( 'Cannot create existing resource.', 'directorist' ), 400 );
+			return new WP_Error( 'wp_oxynate_rest_user_exists', __( 'Cannot create existing resource.', 'wp_oxynate' ), 400 );
 		}
 
 		if ( email_exists( $request['email'] ) ) {
-			return new WP_Error( 'directorist_rest_user_email_exists', __( 'A resource is already registered.', 'directorist' ) );
+			return new WP_Error( 'wp_oxynate_rest_user_email_exists', __( 'A resource is already registered.', 'wp_oxynate' ) );
 		}
 
 		// Create user.
@@ -382,7 +406,7 @@ class Users extends Rest_Base {
 		 * @param WP_REST_Request $request   Request object.
 		 * @param boolean         $creating  True when creating user, false when updating user.
 		 */
-		do_action( 'directorist_rest_insert_user', $user_data, $request, true );
+		do_action( 'wp_oxynate_rest_insert_user', $user_data, $request, true );
 
 		$request->set_param( 'context', 'edit' );
 		$response = $this->prepare_item_for_response( $user_data, $request );
@@ -404,7 +428,7 @@ class Users extends Rest_Base {
 		$user_data = get_userdata( $id );
 
 		if ( empty( $id ) || empty( $user_data->ID ) ) {
-			return new WP_Error( 'directorist_rest_invalid_id', __( 'Invalid resource ID.', 'directorist' ), array( 'status' => 404 ) );
+			return new WP_Error( 'wp_oxynate_rest_invalid_id', __( 'Invalid resource ID.', 'wp_oxynate' ), array( 'status' => 404 ) );
 		}
 
 		$user_data = $this->prepare_item_for_response( $user_data, $request );
@@ -424,27 +448,27 @@ class Users extends Rest_Base {
 		$user_data = get_userdata( $id );
 
 		if ( empty( $user_data ) ) {
-			return new WP_Error( 'directorist_rest_invalid_id', __( 'Invalid resource ID.', 'directorist' ), 400 );
+			return new WP_Error( 'wp_oxynate_rest_invalid_id', __( 'Invalid resource ID.', 'wp_oxynate' ), 400 );
 		}
 
 		if ( ! empty( $request['email'] ) && email_exists( $request['email'] ) && $request['email'] !== $user_data->user_email ) {
-			return new WP_Error( 'directorist_rest_user_invalid_email', __( 'Email address is invalid.', 'directorist' ), 400 );
+			return new WP_Error( 'wp_oxynate_rest_user_invalid_email', __( 'Email address is invalid.', 'wp_oxynate' ), 400 );
 		}
 
 		if ( ! empty( $request['username'] ) && $request['username'] !== $user_data->user_login ) {
-			return new WP_Error( 'directorist_rest_user_invalid_argument', __( "Username isn't editable.", 'directorist' ), 400 );
+			return new WP_Error( 'wp_oxynate_rest_user_invalid_argument', __( "Username isn't editable.", 'wp_oxynate' ), 400 );
 		}
 
 		$updated_user_data = array(
 			'ID' => $user_data->ID
 		);
 
-		// User email.
+		// User Email.
 		if ( isset( $request['email'] ) ) {
 			$updated_user_data['user_email'] = sanitize_email( $request['email'] );
 		}
 
-		// User password.
+		// User Password.
 		if ( isset( $request['password'] ) ) {
 			$updated_user_data['user_pass'] = $request['password'];
 		}
@@ -466,7 +490,7 @@ class Users extends Rest_Base {
 		 * @param WP_REST_Request $request   Request object.
 		 * @param boolean         $creating  True when creating user, false when updating user.
 		 */
-		do_action( 'directorist_rest_insert_user', $user_data, $request, false );
+		do_action( 'wp_oxynate_rest_insert_user', $user_data, $request, false );
 
 		$request->set_param( 'context', 'edit' );
 		$response = $this->prepare_item_for_response( $user_data, $request );
@@ -488,21 +512,21 @@ class Users extends Rest_Base {
 		// We don't support trashing for this type, error out.
 		if ( ! $force ) {
 			return new WP_Error(
-				'directorist_rest_trash_not_supported',
+				'wp_oxynate_rest_trash_not_supported',
 				/* translators: %s: force=true */
-				sprintf( __( "Users do not support trashing. Set '%s' to delete.", 'directorist' ), 'force=true' ),
+				sprintf( __( "Users do not support trashing. Set '%s' to delete.", 'wp_oxynate' ), 'force=true' ),
 				array( 'status' => 501 )
 			);
 		}
 
 		$user_data = get_userdata( $id );
 		if ( ! $user_data ) {
-			return new WP_Error( 'directorist_rest_invalid_id', __( 'Invalid resource id.', 'directorist' ), array( 'status' => 400 ) );
+			return new WP_Error( 'wp_oxynate_rest_invalid_id', __( 'Invalid resource id.', 'wp_oxynate' ), array( 'status' => 400 ) );
 		}
 
 		if ( ! empty( $reassign ) ) {
 			if ( $reassign === $id || ! get_userdata( $reassign ) ) {
-				return new WP_Error( 'directorist_rest_user_invalid_reassign', __( 'Invalid resource id for reassignment.', 'directorist' ), array( 'status' => 400 ) );
+				return new WP_Error( 'wp_oxynate_rest_user_invalid_reassign', __( 'Invalid resource id for reassignment.', 'wp_oxynate' ), array( 'status' => 400 ) );
 			}
 		}
 
@@ -516,8 +540,8 @@ class Users extends Rest_Base {
 
 		if ( ! $result ) {
 			return new WP_Error(
-				'directorist_rest_cannot_delete',
-				__( 'The resource cannot be deleted.', 'directorist' ),
+				'wp_oxynate_rest_cannot_delete',
+				__( 'The resource cannot be deleted.', 'wp_oxynate' ),
 				array( 'status' => 500 )
 			);
 		}
@@ -529,7 +553,7 @@ class Users extends Rest_Base {
 		 * @param WP_REST_Response $response  The response returned from the API.
 		 * @param WP_REST_Request  $request   The request sent to the API.
 		 */
-		do_action( 'directorist_rest_delete_user', $user_data, $response, $request );
+		do_action( 'wp_oxynate_rest_delete_user', $user_data, $response, $request );
 
 		return $response;
 	}
@@ -559,6 +583,7 @@ class Users extends Rest_Base {
 			'location'                 => get_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, true ),
 			'address'                  => get_user_meta( $id, WP_OXYNATE_USER_META_ADDRESS, true ),
 			'is_public_contact_number' => get_user_meta( $id, WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER, true ),
+			'is_available_for_donation' => get_user_meta( $id, WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION, true ),
 			'avater'                   => null,
 			'bookmarks'                => null,
 			'roles'                    => array_values( $user->roles ),
@@ -608,8 +633,7 @@ class Users extends Rest_Base {
 	 * @param WP_REST_Request $request
 	 */
 	protected function update_user_meta_fields( $user, $request ) {
-		$schema = $this->get_item_schema();
-		$id     = $user->ID;
+		$id = $user->ID;
 
 		// Save first name.
 		if ( isset( $request['first_name'] ) ) {
@@ -626,14 +650,35 @@ class Users extends Rest_Base {
 			update_user_meta( $id, 'description', wp_oxynate_clean( $request['description'] ) );
 		}
 
-		// Save address.
-		if ( isset( $request['address'] ) ) {
-			update_user_meta( $id, WP_OXYNATE_USER_META_ADDRESS, wp_oxynate_clean( $request['address'] ) );
+		// Save blood group.
+		if ( isset( $request['blood_group'] ) ) {
+			update_user_meta( $id, WP_OXYNATE_USER_META_BLOOD_GROUP, wp_oxynate_clean( $request['blood_group'] ) );
 		}
 
 		// Save phone number.
 		if ( isset( $request['phone'] ) ) {
 			update_user_meta( $id, WP_OXYNATE_USER_META_PHONE, wp_oxynate_clean( $request['phone'] ) );
+		}
+
+		// Save lcoation.
+		if ( isset( $request['location'] ) ) {
+			update_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, wp_oxynate_clean( $request['location'] ) );
+		}
+
+		// Save address.
+		if ( isset( $request['address'] ) ) {
+			update_user_meta( $id, WP_OXYNATE_USER_META_ADDRESS, wp_oxynate_clean( $request['address'] ) );
+		}
+
+		// Save is public contact number.
+		if ( isset( $request['is_public_contact_number'] ) ) {
+			update_user_meta( $id, WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER, wp_oxynate_clean( $request['is_public_contact_number'] ) );
+		}
+
+		// Is available for donation.
+		if ( isset( $request['is_available_for_donation'] ) ) {
+			$is_available_for_donation = oxynate_is_truthy( $request['is_available_for_donation'] ) ? 1 : 0;
+			update_user_meta( $id, WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION, $is_available_for_donation );
 		}
 
 		// Save user avater.
@@ -690,25 +735,25 @@ class Users extends Rest_Base {
 			'type'       => 'object',
 			'properties' => array(
 				'id' => array(
-					'description' => __( 'Unique identifier for the resource.', 'directorist' ),
+					'description' => __( 'Unique identifier for the resource.', 'wp_oxynate' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'date_created'    => array(
-					'description' => __( 'The date the user was created, as GMT.', 'directorist' ),
+					'description' => __( 'The date the user was created, as GMT.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'format'      => 'date-time',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'name'           => array(
-					'description' => __( 'The display name for the user.', 'directorist' ),
+					'description' => __( 'The display name for the user.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'view' ),
 				),
 				'username' => array(
-					'description' => __( 'User login name.', 'directorist' ),
+					'description' => __( 'User login name.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'arg_options' => array(
@@ -716,12 +761,12 @@ class Users extends Rest_Base {
 					),
 				),
 				'nickname'           => array(
-					'description' => __( 'The nickname for the user.', 'directorist' ),
+					'description' => __( 'The nickname for the user.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'view' ),
 				),
 				'first_name' => array(
-					'description' => __( 'User first name.', 'directorist' ),
+					'description' => __( 'User first name.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'arg_options' => array(
@@ -729,7 +774,7 @@ class Users extends Rest_Base {
 					),
 				),
 				'last_name' => array(
-					'description' => __( 'User last name.', 'directorist' ),
+					'description' => __( 'User last name.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'arg_options' => array(
@@ -737,73 +782,73 @@ class Users extends Rest_Base {
 					),
 				),
 				'description'        => array(
-					'description' => __( 'Description of the user.', 'directorist' ),
+					'description' => __( 'Description of the user.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'email' => array(
-					'description' => __( 'The email address for the user.', 'directorist' ),
+					'description' => __( 'The email address for the user.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'format'      => 'email',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'url' => array(
-					'description' => __( 'The website url for the user.', 'directorist' ),
+					'description' => __( 'The website url for the user.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'format'      => 'url',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'password' => array(
-					'description' => __( 'User password.', 'directorist' ),
+					'description' => __( 'User password.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'edit' ),
 				),
 				'address'        => array(
-					'description' => __( 'Address of the user.', 'directorist' ),
+					'description' => __( 'Address of the user.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'phone'        => array(
-					'description' => __( 'Phone number of the user.', 'directorist' ),
+					'description' => __( 'Phone number of the user.', 'wp_oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'avater'       => array(
-					'description' => __( 'User avater image data.', 'directorist' ),
+					'description' => __( 'User avater image data.', 'wp_oxynate' ),
 					'type'        => 'object',
 					'context'     => array( 'view', 'edit' ),
 					'properties'  => array(
 						'id'                => array(
-							'description' => __( 'Image ID.', 'directorist' ),
+							'description' => __( 'Image ID.', 'wp_oxynate' ),
 							'type'        => 'integer',
 							'context'     => array( 'view', 'edit' ),
 						),
 						'date_created'      => array(
-							'description' => __( "The date the image was created, in the site's timezone.", 'directorist' ),
+							'description' => __( "The date the image was created, in the site's timezone.", 'wp_oxynate' ),
 							'type'        => 'date-time',
 							'context'     => array( 'view', 'edit' ),
 							'readonly'    => true,
 						),
 						'date_created_gmt'  => array(
-							'description' => __( 'The date the image was created, as GMT.', 'directorist' ),
+							'description' => __( 'The date the image was created, as GMT.', 'wp_oxynate' ),
 							'type'        => 'date-time',
 							'context'     => array( 'view', 'edit' ),
 							'readonly'    => true,
 						),
 						'date_modified'     => array(
-							'description' => __( "The date the image was last modified, in the site's timezone.", 'directorist' ),
+							'description' => __( "The date the image was last modified, in the site's timezone.", 'wp_oxynate' ),
 							'type'        => 'date-time',
 							'context'     => array( 'view', 'edit' ),
 							'readonly'    => true,
 						),
 						'date_modified_gmt' => array(
-							'description' => __( 'The date the image was last modified, as GMT.', 'directorist' ),
+							'description' => __( 'The date the image was last modified, as GMT.', 'wp_oxynate' ),
 							'type'        => 'date-time',
 							'context'     => array( 'view', 'edit' ),
 							'readonly'    => true,
 						),
 						'src'               => array(
-							'description' => __( 'Image URL.', 'directorist' ),
+							'description' => __( 'Image URL.', 'wp_oxynate' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => array( 'view', 'edit' ),
@@ -811,30 +856,30 @@ class Users extends Rest_Base {
 					),
 				),
 				'social_links' => array(
-					'description' => __( 'User social links.', 'directorist' ),
+					'description' => __( 'User social links.', 'wp_oxynate' ),
 					'type'        => 'object',
 					'context'     => array( 'view', 'edit' ),
 					'properties'  => array(
 						'facebook' => array(
-							'description' => __( 'Facebook profile link.', 'directorist' ),
+							'description' => __( 'Facebook profile link.', 'wp_oxynate' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => array( 'view', 'edit' ),
 						),
 						'twitter' => array(
-							'description' => __( 'Twitter profile link.', 'directorist' ),
+							'description' => __( 'Twitter profile link.', 'wp_oxynate' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => array( 'view', 'edit' ),
 						),
 						'linkedin' => array(
-							'description' => __( 'LinkedIn profile link.', 'directorist' ),
+							'description' => __( 'LinkedIn profile link.', 'wp_oxynate' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => array( 'view', 'edit' ),
 						),
 						'youtube' => array(
-							'description' => __( 'Youtube profile link.', 'directorist' ),
+							'description' => __( 'Youtube profile link.', 'wp_oxynate' ),
 							'type'        => 'string',
 							'format'      => 'uri',
 							'context'     => array( 'view', 'edit' ),
@@ -842,7 +887,7 @@ class Users extends Rest_Base {
 					),
 				),
 				'favorite' =>  array(
-					'description' => __( 'User favorite listing ids.', 'directorist' ),
+					'description' => __( 'User favorite listing ids.', 'wp_oxynate' ),
 					'type'        => 'array',
 					'items'       => array(
 						'type' => 'integer',
@@ -851,7 +896,7 @@ class Users extends Rest_Base {
 					'readonly'    => true,
 				),
 				'listings_count' => array(
-					'description' => __( 'Quantity of listings created by the user.', 'directorist' ),
+					'description' => __( 'Quantity of listings created by the user.', 'wp_oxynate' ),
 					'type'        => 'integer',
 					'default'     => 0,
 					'context'     => array( 'view', 'edit' ),
@@ -885,7 +930,7 @@ class Users extends Rest_Base {
 		$params['context']['default'] = 'view';
 
 		$params['exclude'] = array(
-			'description'       => __( 'Ensure result set excludes specific IDs.', 'directorist' ),
+			'description'       => __( 'Ensure result set excludes specific IDs.', 'wp_oxynate' ),
 			'type'              => 'array',
 			'items'             => array(
 				'type'          => 'integer',
@@ -894,7 +939,7 @@ class Users extends Rest_Base {
 			'sanitize_callback' => 'wp_parse_id_list',
 		);
 		$params['include'] = array(
-			'description'       => __( 'Limit result set to specific IDs.', 'directorist' ),
+			'description'       => __( 'Limit result set to specific IDs.', 'wp_oxynate' ),
 			'type'              => 'array',
 			'items'             => array(
 				'type'          => 'integer',
@@ -903,14 +948,14 @@ class Users extends Rest_Base {
 			'sanitize_callback' => 'wp_parse_id_list',
 		);
 		$params['offset'] = array(
-			'description'        => __( 'Offset the result set by a specific number of items.', 'directorist' ),
+			'description'        => __( 'Offset the result set by a specific number of items.', 'wp_oxynate' ),
 			'type'               => 'integer',
 			'sanitize_callback'  => 'absint',
 			'validate_callback'  => 'rest_validate_request_arg',
 		);
 		$params['order'] = array(
 			'default'            => 'asc',
-			'description'        => __( 'Order sort attribute ascending or descending.', 'directorist' ),
+			'description'        => __( 'Order sort attribute ascending or descending.', 'wp_oxynate' ),
 			'enum'               => array( 'asc', 'desc' ),
 			'sanitize_callback'  => 'sanitize_key',
 			'type'               => 'string',
@@ -918,20 +963,20 @@ class Users extends Rest_Base {
 		);
 		$params['orderby'] = array(
 			'default'            => 'name',
-			'description'        => __( 'Sort collection by object attribute.', 'directorist' ),
+			'description'        => __( 'Sort collection by object attribute.', 'wp_oxynate' ),
 			'enum'               => array_keys( $this->get_orderby_possibles() ),
 			'sanitize_callback'  => 'sanitize_key',
 			'type'               => 'string',
 			'validate_callback'  => 'rest_validate_request_arg',
 		);
 		$params['email'] = array(
-			'description'        => __( 'Limit result set to resources with a specific email.', 'directorist' ),
+			'description'        => __( 'Limit result set to resources with a specific email.', 'wp_oxynate' ),
 			'type'               => 'string',
 			'format'             => 'email',
 			'validate_callback'  => 'rest_validate_request_arg',
 		);
 		$params['role'] = array(
-			'description'        => __( 'Limit result set to resources with a specific role.', 'directorist' ),
+			'description'        => __( 'Limit result set to resources with a specific role.', 'wp_oxynate' ),
 			'type'               => 'string',
 			'default'            => 'all',
 			'enum'               => array_merge( array( 'all' ), $this->get_role_names() ),
