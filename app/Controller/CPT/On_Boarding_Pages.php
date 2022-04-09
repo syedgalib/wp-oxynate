@@ -30,7 +30,7 @@ class On_Boarding_Pages {
             'has_archive'  => false,
             'show_in_menu' => 'edit.php?post_type=donation-request',
             'menu_icon'    => 'dashicons-heart',
-            'supports'    => [ 
+            'supports'     => [ 
                 'title',
                 'editor',
                 'thumbnail',

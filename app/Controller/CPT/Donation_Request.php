@@ -28,10 +28,10 @@ class Donation_Request {
             'labels'      => wp_oxinate_get_wp_labels( $singular, $plural, $name ),
             'public'      => true,
             'has_archive' => true,
+            'rewrite' => [
+                'slug' => 'donation-requests'
+            ],
             'menu_icon'   => 'dashicons-heart',
-            // 'rewrite'     => [
-            //     'slug' => 'donation-requests',
-            // ],
             'supports'    => [ 
                 'title', 
                 'editor', 

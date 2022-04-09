@@ -35,7 +35,7 @@ function wp_oxinate_get_wp_labels( $singular = '', $plural = '', $name = '', $ar
         'item_link_description'      => 'A link to a ' . ucwords( $singular ),
     ];
 
-    $labels = ( is_array( $args ) && ! empty( $args ) ) ? array_merge( $default, $args ) : $args;
+    $labels = ( is_array( $args ) ) ? array_merge( $default, $args ) : $default;
 
     return $labels;
 }
