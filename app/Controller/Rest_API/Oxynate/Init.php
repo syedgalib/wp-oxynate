@@ -1,6 +1,6 @@
 <?php
 
-namespace Oxynate\Controller\Hook;
+namespace Oxynate\Controller\Rest_API\Oxynate;
 
 use Oxynate\Helper;
 
@@ -26,7 +26,7 @@ class Init {
 	 */
 	protected function get_controllers() {
         return [
-            JWT::class,
+            Version_1\Init::class,
         ];
     }
 }

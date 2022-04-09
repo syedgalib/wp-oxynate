@@ -24,5 +24,12 @@ defined( 'WP_OXYNATE_POST_TYPE_ON_BOARDING_PAGES' ) || define( 'WP_OXYNATE_POST_
 
 // Taxonomy
 defined( 'WP_OXYNATE_TERM_LOCATION' ) || define( 'WP_OXYNATE_TERM_LOCATION', 'wp-oxynate-district' );
-defined( 'WP_OXYNATE_TERM_AREA' ) || define( 'WP_OXYNATE_TERM_AREA', 'wp-oxynate-area' );
 defined( 'WP_OXYNATE_TERM_BLOOD_GROUP' ) || define( 'WP_OXYNATE_TERM_BLOOD_GROUP', 'wp-oxynate-blood-group' );
+
+// Users Meta Keys
+defined( 'WP_OXYNATE_USER_META_AVATER' ) || define( 'WP_OXYNATE_USER_META_AVATER', '_wp_oxynate_user_avater' );
+defined( 'WP_OXYNATE_USER_META_BLOOD_GROUP' ) || define( 'WP_OXYNATE_USER_META_BLOOD_GROUP', '_wp_oxynate_blood_group' );
+defined( 'WP_OXYNATE_USER_META_PHONE' ) || define( 'WP_OXYNATE_USER_META_PHONE', '_wp_oxynate_phone' );
+defined( 'WP_OXYNATE_USER_META_LOCATION' ) || define( 'WP_OXYNATE_USER_META_LOCATION', '_wp_oxynate_location' );
+defined( 'WP_OXYNATE_USER_META_ADDRESS' ) || define( 'WP_OXYNATE_USER_META_ADDRESS', '_wp_oxynate_address' );
+defined( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER' ) || define( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER', '_wp_oxynate_is_public_contact_number' );
