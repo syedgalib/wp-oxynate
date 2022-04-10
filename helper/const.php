@@ -23,7 +23,7 @@ defined( 'WP_OXYNATE_POST_TYPE_DONATION_REQUEST' ) || define( 'WP_OXYNATE_POST_T
 defined( 'WP_OXYNATE_POST_TYPE_ON_BOARDING_PAGES' ) || define( 'WP_OXYNATE_POST_TYPE_ON_BOARDING_PAGES', 'on-boarding-pages' );
 
 // Taxonomy
-defined( 'WP_OXYNATE_TERM_LOCATION' ) || define( 'WP_OXYNATE_TERM_LOCATION', 'wp-oxynate-district' );
+defined( 'WP_OXYNATE_TERM_LOCATION' ) || define( 'WP_OXYNATE_TERM_LOCATION', 'wp-oxynate-location' );
 defined( 'WP_OXYNATE_TERM_BLOOD_GROUP' ) || define( 'WP_OXYNATE_TERM_BLOOD_GROUP', 'wp-oxynate-blood-group' );
 
 // Users Meta Keys

@@ -4,7 +4,7 @@ namespace Oxynate\Controller\Rest_API\Oxynate\Version_1\Helper;
 
 use \WP_Error;
 
-class Posts_Controller extends Rest_Base {
+abstract class Posts_Controller extends Rest_Base {
 
     protected $post_type = '';
 

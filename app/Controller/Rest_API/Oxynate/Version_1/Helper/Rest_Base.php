@@ -3,9 +3,8 @@
 namespace Oxynate\Controller\Rest_API\Oxynate\Version_1\Helper;
 
 use \WP_REST_Controller;
-use \WP_Error;
 
-class Rest_Base extends WP_REST_Controller {
+abstract class Rest_Base extends WP_REST_Controller {
 
     /**
 	 * Namespace
