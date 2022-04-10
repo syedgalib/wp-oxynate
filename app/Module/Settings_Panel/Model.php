@@ -14,6 +14,7 @@ class Model {
      * @return array Options Fields
      */
     public static function get_option_fields() {
+        
         $option_fields = [];
 
         $option_fields['app_name'] = [
@@ -39,6 +40,7 @@ class Model {
      * @return mixed
      */
     public static function get_option_value( $key = '', $default = '' ) {
+        
         $options = self::get_options();
         $value = ( key_exists( $key, $options ) ) ? $options[ $key ] : $default;
         
@@ -52,6 +54,7 @@ class Model {
      * @return array
      */
     public static function update_options( $new_options = [] ) {
+        
         $status = [];
         $status['success'] = false;
         $status['message'] = '';
@@ -81,6 +84,7 @@ class Model {
      * @return array
      */
     public static function delete_option( $key = '' ) {
+        
         $status = [];
         $status['success'] = false;
         $status['message'] = '';
@@ -114,6 +118,7 @@ class Model {
      * @return array
      */
     public static function get_validated_options( $options = [] ) {
+        
         if ( ! is_array( $options ) ) {
             return [];
         }
@@ -148,6 +153,7 @@ class Model {
      * @return void
      */
     public static function update_option( $option_key = '', $option_value = '' ) {
+        
         $options = self::get_options();
         $options[ $option_key ] = $option_value;
 
@@ -160,12 +166,34 @@ class Model {
      * @return array Options
      */
     public static function get_options() {
+        
         $options = get_option( self::$options_key, [] );
         $options = ( is_array( $options ) ) ? $options : [];
 
         $options['on_boarding_pages'] = On_Boarding_Pages::get_rest_posts();
 
         return $options;
+    }
+    
+    /**
+     * Get Settings Options
+     * 
+     * @return array Settings
+     */
+    public static function get_settings_options() {
+
+        $option_fields = self::get_option_fields();
+        $option_fields = ( is_array( $option_fields ) ) ? $option_fields : [];
+
+        $settings = [];
+
+        foreach ( $option_fields as $_key => $_args ) {
+            $settings[ $_key ] = ( isset( $_args['value'] ) ) ? $_args['value'] : null;
+        }
+
+        $settings['on_boarding_pages'] = On_Boarding_Pages::get_rest_posts();
+
+        return $settings;
     }
 
 }

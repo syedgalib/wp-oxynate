@@ -210,7 +210,7 @@ class App_Settings extends Rest_Base {
 
 		$key = ( isset( $request[ 'key'] ) ) ? sanitize_key( $request[ 'key'] ) : '';
 
-		$response = Settings_Panel_Model::get_options();
+		$response = Settings_Panel_Model::get_settings_options();
 
 		if ( ! empty( $key ) && isset( $response[ $key ] ) ) {
 			$response = $response[ $key ];
