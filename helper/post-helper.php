@@ -12,11 +12,7 @@ function wp_oxynate_get_taxonomy_terms( $post_id, $taxonomy = '' ) {
     $terms = array();
 
     foreach ( wp_oxynate_get_object_terms( $post_id, $taxonomy ) as $term ) {
-        $_term = array(
-            'id'   => $term->term_id,
-            'name' => $term->name,
-            'slug' => $term->slug,
-        );
+        $_term = wp_oxynate_rest_get_term_data( $term );
 
         $terms[] = $_term;
     }
@@ -228,4 +224,92 @@ function wp_oxynate_rest_set_uploaded_image_as_attachment( $upload, $id = 0 ) {
 	}
 
 	return $attachment_id;
+}
+
+/**
+ * WP Oxynate Get Term Parents List
+ * 
+ * @param object $term_id
+ * @param string $taxonomy
+ * 
+ * @return array Terms with parents
+ */
+function wp_oxynate_get_term_parents_list( $term_id, $taxonomy ) {
+
+	if ( empty( $term_id ) ) {
+		return [];
+	}
+
+	$parents_list = get_term_parents_list( $term_id, $taxonomy, [
+        'format'    => 'slug',
+        'separator' => ',',
+        'link'      => false
+    ]);
+
+    $parents_list_by_slug = ( ! empty( $parents_list ) ) ? explode( ',', trim( $parents_list, ',' ) ) : [];
+    $parents_list = [];
+
+    foreach( $parents_list_by_slug as $slug ) {
+        $term = get_term_by( 'slug', $slug, $taxonomy );
+
+        if ( empty( $term ) || is_wp_error( $term ) ) {
+            continue;
+        }
+
+        $parents_list[] = $term;
+
+    }
+
+	return $parents_list;
+}
+
+/**
+ * WP Oxynate Rest Location by Area Types
+ * 
+ * @param int $term_id
+ * @return array Location by area types
+ */
+function wp_oxynate_rest_get_location_by_area_types( $term_id ) {
+
+	$area_types = [ 'district', 'area' ];
+	$location_parent_list = wp_oxynate_get_term_parents_list( $term_id, WP_OXYNATE_TERM_LOCATION );
+
+	if ( empty( $location_parent_list ) ) {
+		return [];
+	}
+
+	$count     = 0;
+	$locations = [];
+
+	foreach( $location_parent_list as $location ) {
+
+		if ( $count >= count( $area_types ) ) {
+			break;
+		}
+
+		$area_type = $area_types[ $count ];
+		$locations[ $area_type ] = wp_oxynate_rest_get_term_data( $location );
+
+		$count++;
+
+	}
+
+	return $locations;
+}
+
+/**
+ * Wp Oxynate Rest Get Term Data
+ * 
+ * @param object $term
+ * @return array|null
+ */
+function wp_oxynate_rest_get_term_data( $term ) {
+
+	$term_data = [];
+
+	$term_data['id'] = $term->term_id;
+	$term_data['name'] = $term->name;
+	$term_data['slug'] = $term->slug;
+
+	return $term_data;
 }

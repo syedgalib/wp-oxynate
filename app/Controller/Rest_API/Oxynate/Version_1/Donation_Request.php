@@ -122,8 +122,6 @@ class Donation_Request extends Posts_Controller {
 			$objects[] = $this->prepare_response_for_collection( $data );
 		}
 
-        return $objects;
-
 		$page      = (int) $query_args['paged'];
 		$max_pages = $query_results['pages'];
 
@@ -168,8 +166,6 @@ class Donation_Request extends Posts_Controller {
 		$data = $this->prepare_item_for_response( $post, $request );
 		$response = rest_ensure_response( $data );
 
-        return $data;
-
 		if ( $this->public ) {
 			$response->link_header( 'alternate', get_permalink( $id ), array( 'type' => 'text/html' ) );
 		}
@@ -184,32 +180,33 @@ class Donation_Request extends Posts_Controller {
 	 * @return WP_REST_Request|WP_Error
 	 */
 	public function create_item( $request ) {
+		$post_type = $this->post_type;
+		$post      = $this->save_post( $request );
 
-		$post = $this->save_post( $request );
-
-		return $post;
+		if ( is_wp_error( $post ) ) {
+			return $post;
+		}
 
 		$this->update_additional_fields_for_object( $post, $request );
 
-		// /**
-		//  * Fires after a single term is created or updated via the REST API.
-		//  *
-		//  * @param WP_Term         $term      Inserted Term object.
-		//  * @param WP_REST_Request $request   Request object.
-		//  * @param boolean         $creating  True when creating term, false when updating.
-		//  */
-		// do_action( "wp_oxynate_rest_insert_{$post_type}", $term, $request, true );
+		/**
+		 * Fires after a single post is created or updated via the REST API.
+		 *
+		 * @param WP_POST         $post      Inserted Post object.
+		 * @param WP_REST_Request $request   Request object.
+		 * @param boolean         $creating  True when creating post, false when updating.
+		 */
+		do_action( "wp_oxynate_rest_insert_{$post_type}", $post, $request, true );
 
-		// $request->set_param( 'context', 'edit' );
-		// $response = $this->prepare_item_for_response( $term, $request );
-		// $response = rest_ensure_response( $response );
-		// $response->set_status( 201 );
+		$data = $this->prepare_item_for_response( $post, $request );
+		$response = rest_ensure_response( $data );
+		$response->set_status( 201 );
 
-		// $base = '/' . $this->namespace . '/' . $this->rest_base;
+		$base = '/' . $this->namespace . '/' . $this->rest_base;
 
-		// $response->header( 'Location', rest_url( $base . '/' . $term->term_id ) );
+		$response->header( 'Location', rest_url( $base . '/' . $post->term_id ) );
 
-		// return $response;
+		return $response;
 	}
 
 	/**
@@ -235,10 +232,10 @@ class Donation_Request extends Posts_Controller {
 			return $post_id;
 		}
 
-		// Save Locations
-		if ( isset( $args['locations'] ) ) {
+		// Save Location
+		if ( isset( $args['location'] ) && ! empty( $args['location']['id'] ) ) {
 
-			$this->set_post_terms( $post_id, $args['locations'], WP_OXYNATE_TERM_LOCATION );
+			wp_set_post_terms( $post_id, $args['location']['id'], WP_OXYNATE_TERM_LOCATION );
 
 		}
 
@@ -256,14 +253,70 @@ class Donation_Request extends Posts_Controller {
 
 		}
 
-		// Save Images
-		if ( isset( $args['images'] ) ) {
+		// Update Preset Fields
+		$this->update_preset_fields( $post_id, $args );
 
-			$this->set_post_images( $post_id, $args['images'] );
-
+		// Post Meta Data
+		if ( ! empty( $args['meta_data'] ) ) {
+			$this->update_post_metadata( $post_id, $args['meta_data'] );
 		}
 
 		return get_post( $post_id );
+	}
+
+	/**
+	 * Update Post Metadata
+	 * 
+	 * @param int $post_id
+	 * @param array $metadata
+	 * 
+	 * @return void
+	 */
+	public function update_post_metadata( $post_id, $metadata = [] ) {
+
+		if ( empty( $metadata ) ) {
+			return;
+		}
+
+		foreach( $metadata as $meta ) {
+
+			if ( ! isset( $meta['key'] ) && ! isset( $meta['value'] ) ) {
+				continue;
+			}
+
+			update_post_meta( $post_id, $meta['key'], sanitize_text_field( $meta['value'] ) );
+		}
+
+	}
+
+	/**
+	 * Update Preset Fields
+	 * 
+	 * @param int $post_id
+	 * @param array $args
+	 * 
+	 * @return void
+	 */
+	public function update_preset_fields( $post_id, $args = [] ) {
+
+		$preset_metas = [
+			'gender'     => WP_OXYNATE_POST_META_GENDER,
+			'hemoglobin' => WP_OXYNATE_POST_META_HEMOGLOBIN,
+			'phone'      => WP_OXYNATE_POST_META_PHONE,
+			'address'    => WP_OXYNATE_POST_META_ADDRESS,
+			'latitude'   => WP_OXYNATE_POST_META_LATITUDE,
+			'longitude'  => WP_OXYNATE_POST_META_LONGITUDE,
+		];
+
+		foreach( $preset_metas as $meta_id => $meta_key ) {
+			
+			if ( isset( $args[ $meta_id ] ) ) {
+
+				update_post_meta( $post_id, $meta_key, $args[ $meta_id ] );
+
+			}
+		}
+
 	}
 
 	/**
@@ -281,8 +334,6 @@ class Donation_Request extends Posts_Controller {
 			if ( empty( $image['id'] ) && ! empty( $image['src'] ) ) {
 
 				$upload = wp_oxynate_rest_upload_image_from_url( esc_url_raw( $image['src'] ) );
-
-				BitLog()->push( 'set_post_images', $upload, __FILE__, __LINE__ );
 
 				if ( ! is_wp_error( $upload ) ) {
 					$image_id = wp_oxynate_rest_set_uploaded_image_as_attachment( $upload );
@@ -338,8 +389,6 @@ class Donation_Request extends Posts_Controller {
 		if ( empty( $terms_ids ) ) {
 			return;
 		}
-
-		BitLog()->push( 'set_post_terms', $terms_ids, __FILE__, __LINE__ );
 		
 		wp_set_object_terms( $post_id, $terms_ids, $taxonomy );
 	}
@@ -421,8 +470,8 @@ class Donation_Request extends Posts_Controller {
 		}
 
 		// Locations
-		if ( isset( $request['locations'] ) ) {
-			$args['locations'] = $request['locations'];
+		if ( isset( $request['location'] ) ) {
+			$args['location'] = $request['location'];
 		}
 
 		// Blood Group
@@ -433,6 +482,36 @@ class Donation_Request extends Posts_Controller {
 		// Images
 		if ( isset( $request['images'] ) ) {
 			$args['images'] = $request['images'];
+		}
+
+		// Gender
+		if ( isset( $request['gender'] ) ) {
+			$args['gender'] = sanitize_text_field( $request['gender'] );
+		}
+
+		// Hemoglobin
+		if ( isset( $request['hemoglobin'] ) ) {
+			$args['hemoglobin'] = sanitize_text_field( $request['hemoglobin'] );
+		}
+
+		// Phone
+		if ( isset( $request['phone'] ) ) {
+			$args['phone'] = sanitize_text_field( $request['phone'] );
+		}
+
+		// Address
+		if ( isset( $request['address'] ) ) {
+			$args['address'] = sanitize_text_field( $request['address'] );
+		}
+
+		// Latitude
+		if ( isset( $request['latitude'] ) ) {
+			$args['latitude'] = sanitize_text_field( $request['latitude'] );
+		}
+
+		// longitude
+		if ( isset( $request['longitude'] ) ) {
+			$args['longitude'] = sanitize_text_field( $request['longitude'] );
 		}
 
 		// Meta Data
@@ -517,12 +596,6 @@ class Donation_Request extends Posts_Controller {
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 				),
-				'email' => array(
-					'description' => __( 'Email address.', 'wp-oxynate' ),
-					'type'        => 'string',
-					'format'      => 'email',
-					'context'     => array( 'view', 'edit' ),
-				),
 				'address' => array(
 					'description' => __( 'Listing address.', 'wp-oxynate' ),
 					'type'        => 'string',
@@ -553,11 +626,11 @@ class Donation_Request extends Posts_Controller {
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 				),
-				'locations' => array(
-					'description' => __( 'List of locations.', 'wp-oxynate' ),
-					'type'        => 'array',
+				'location' => array(
+					'description' => __( 'Location of the post.', 'wp-oxynate' ),
+					'type'        => 'object',
 					'context'     => array( 'view', 'edit' ),
-					'items'       => array(
+					'properties'  => array(
 						'type'       => 'object',
 						'properties' => array(
 							'id'   => array(
@@ -573,6 +646,62 @@ class Donation_Request extends Posts_Controller {
 							),
 							'slug' => array(
 								'description' => __( 'Location slug.', 'wp-oxynate' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+						),
+					),
+				),
+				'district' => array(
+					'description' => __( 'District of the post.', 'wp-oxynate' ),
+					'type'        => 'object',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+					'properties'  => array(
+						'type'       => 'object',
+						'properties' => array(
+							'id'   => array(
+								'description' => __( 'District ID.', 'wp-oxynate' ),
+								'type'        => 'integer',
+								'context'     => array( 'view', 'edit' ),
+							),
+							'name' => array(
+								'description' => __( 'District name.', 'wp-oxynate' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'slug' => array(
+								'description' => __( 'District slug.', 'wp-oxynate' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+						),
+					),
+				),
+				'area' => array(
+					'description' => __( 'Area of the post.', 'wp-oxynate' ),
+					'type'        => 'object',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+					'properties'  => array(
+						'type'       => 'object',
+						'properties' => array(
+							'id'   => array(
+								'description' => __( 'Area ID.', 'wp-oxynate' ),
+								'type'        => 'integer',
+								'context'     => array( 'view', 'edit' ),
+							),
+							'name' => array(
+								'description' => __( 'Area name.', 'wp-oxynate' ),
+								'type'        => 'string',
+								'context'     => array( 'view', 'edit' ),
+								'readonly'    => true,
+							),
+							'slug' => array(
+								'description' => __( 'Area slug.', 'wp-oxynate' ),
 								'type'        => 'string',
 								'context'     => array( 'view', 'edit' ),
 								'readonly'    => true,
@@ -765,7 +894,7 @@ class Donation_Request extends Posts_Controller {
 			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
 		);
-		$params['locations'] = array(
+		$params['location'] = array(
 			'description'       => __( 'Limit result set to posts assigned a specific location ID.', 'wp-oxynate' ),
 			'type'              => 'string',
 			'sanitize_callback' => 'wp_parse_id_list',
@@ -877,11 +1006,11 @@ class Donation_Request extends Posts_Controller {
 		}
 
 		// Set locations query.
-		if ( isset( $request['locations'] ) ) {
+		if ( isset( $request['location'] ) ) {
 			$tax_query['tax_query'][] = [
 				'taxonomy'         => WP_OXYNATE_TERM_LOCATION,
 				'field'            => 'term_id',
-				'terms'            => $request['locations'],
+				'terms'            => $request['location'],
 				'include_children' => true, /*@todo; Add option to include children or exclude it*/
 			];
 		}
@@ -1049,7 +1178,16 @@ class Donation_Request extends Posts_Controller {
 	protected function get_post_data( $post, $context = 'view', $request ) {
 		$fields  = $this->get_fields_for_response( $request );
 
+		$locations = wp_oxynate_get_taxonomy_terms( $post->ID, WP_OXYNATE_TERM_LOCATION );
+		$location  = ( ! empty( $locations ) ) ? $locations[0] : null;
+
+		$location_by_area_types = ( ! empty( $location ) ) ? wp_oxynate_rest_get_location_by_area_types( $location['id'], WP_OXYNATE_TERM_LOCATION ) : [];
+
+		$district = ( isset( $location_by_area_types['district'] ) ) ? $location_by_area_types['district'] : null;
+		$area     = ( isset( $location_by_area_types['area'] ) ) ? $location_by_area_types['area'] : null;
+    	
 		$base_data = array();
+
 		foreach ( $fields as $field ) {
 			switch ( $field ) {
 				case 'id':
@@ -1083,30 +1221,33 @@ class Donation_Request extends Posts_Controller {
 					$base_data['short_description'] = 'view' === $context ? $post->post_excerpt : $post->post_excerpt;
 					break;
 				case 'phone':
-					$base_data['phone'] = get_post_meta( $post->ID, '_phone', true );
-					break;
-				case 'email':
-					$base_data['email'] = get_post_meta( $post->ID, '_email', true );
+					$base_data['phone'] = get_post_meta( $post->ID, WP_OXYNATE_POST_META_PHONE, true );
 					break;
 				case 'address':
-					$base_data['address'] = get_post_meta( $post->ID, '_address', true );
+					$base_data['address'] = get_post_meta( $post->ID, WP_OXYNATE_POST_META_ADDRESS, true );
 					break;
 				case 'latitude':
-					$base_data['latitude'] = get_post_meta( $post->ID, '_latitude', true );
+					$base_data['latitude'] = get_post_meta( $post->ID, WP_OXYNATE_POST_META_LATITUDE, true );
 					break;
 				case 'longitude':
-					$base_data['longitude'] = get_post_meta( $post->ID, '_longitude', true );
+					$base_data['longitude'] = get_post_meta( $post->ID, WP_OXYNATE_POST_META_LONGITUDE, true );
 					break;
 				case 'status':
 					$base_data['status'] = $post->post_status;
 					break;
-				case 'locations':
-					$base_data['locations'] = wp_oxynate_get_taxonomy_terms( $post->ID, WP_OXYNATE_TERM_LOCATION );
+				case 'location':
+					$base_data['location'] = $location;
+					break;
+				case 'district':
+					$base_data['district'] = $district;
+					break;
+				case 'area':
+					$base_data['area'] = $area;
 					break;
 				case 'blood_group':
                     $blood_groups = wp_oxynate_get_taxonomy_terms( $post->ID, WP_OXYNATE_TERM_BLOOD_GROUP );
-                    $blood_groups = ( ! empty( $blood_groups ) ) ? $blood_groups[0] : null;
-					$base_data['blood_group'] = $blood_groups;
+                    $blood_group  = ( ! empty( $blood_groups ) ) ? $blood_groups[0] : null;
+					$base_data['blood_group'] = $blood_group;
 					break;
 				case 'images':
 					$base_data['images'] = $this->get_images( $post );
