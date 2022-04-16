@@ -15,8 +15,6 @@ abstract class Posts_Controller extends Rest_Base {
      */
     public function get_items_permissions_check( $request ) {
 
-		return true;
-
         if ( ! $this->check_post_permissions( $this->post_type, 'read' ) ) {
 			return new WP_Error( 'wp_oxynate_rest_cannot_view', __( 'Sorry, you cannot list resources.', 'directorist' ), [ 'status' => rest_authorization_required_code() ] );
 		}
@@ -32,8 +30,6 @@ abstract class Posts_Controller extends Rest_Base {
 	 */
 	public function create_item_permissions_check( $request ) {
 
-		return true;
-
 		if ( ! $this->check_post_permissions( $this->post_type, 'create' ) ) {
 			return new WP_Error( 'wp_oxynate_rest_cannot_create', __( 'Sorry, you are not allowed to create resources.', 'wp-oxynate' ), [ 'status' => rest_authorization_required_code() ] );
 		}
@@ -48,8 +44,6 @@ abstract class Posts_Controller extends Rest_Base {
 	 * @return WP_Error|boolean
 	 */
 	public function get_item_permissions_check( $request ) {
-
-		return true;
 
 		$post = get_post( (int) $request['id'] );
 
@@ -68,8 +62,6 @@ abstract class Posts_Controller extends Rest_Base {
 	 */
 	public function update_item_permissions_check( $request ) {
 
-		return true;
-
 		$post = get_post( (int) $request['id'] );
 
 		if ( $post && ! $this->check_post_permissions( $this->post_type, 'edit', $post->ID ) ) {
@@ -86,8 +78,6 @@ abstract class Posts_Controller extends Rest_Base {
 	 * @return bool|WP_Error
 	 */
 	public function delete_item_permissions_check( $request ) {
-
-		return true;
 
 		$post = get_post( (int) $request['id'] );
 
@@ -107,6 +97,7 @@ abstract class Posts_Controller extends Rest_Base {
 	 * @return bool
 	 */
 	protected function check_post_permissions( $post_type, $context = 'read', $object_id = 0 ) {
+		
 		$contexts = [
 			'read'   => 'read_private_posts',
 			'create' => 'publish_posts',
@@ -131,6 +122,7 @@ abstract class Posts_Controller extends Rest_Base {
 	 * @return array
 	 */
 	protected function get_allowed_query_vars() {
+
 		global $wp;
 
 		/**
@@ -141,8 +133,8 @@ abstract class Posts_Controller extends Rest_Base {
 		 * @param array  Array of allowed WP_Query query vars.
 		 */
 		$valid_vars = apply_filters( 'query_vars', $wp->public_query_vars );
-
 		$post_type_obj = get_post_type_object( $this->post_type );
+
 		if ( current_user_can( $post_type_obj->cap->edit_posts ) ) {
 			/**
 			 * Filter the allowed 'private' query vars for authorized users.
@@ -160,6 +152,7 @@ abstract class Posts_Controller extends Rest_Base {
 			$private = apply_filters( 'wp_oxynate_rest_private_query_vars', $wp->private_query_vars );
 			$valid_vars = array_merge( $valid_vars, $private );
 		}
+
 		// Define our own in addition to WP's normal vars.
 		$rest_valid = array(
 			'date_query',
@@ -206,6 +199,7 @@ abstract class Posts_Controller extends Rest_Base {
 	 * @return array
 	 */
 	protected function get_images( $post ) {
+
 		$images         = array();
 		$attachment_ids = array();
 
@@ -216,12 +210,15 @@ abstract class Posts_Controller extends Rest_Base {
 
 		// Build image data.
 		foreach ( $attachment_ids as $position => $attachment_id ) {
+
 			$attachment_post = get_post( $attachment_id );
+
 			if ( is_null( $attachment_post ) ) {
 				continue;
 			}
 
 			$attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
+
 			if ( ! is_array( $attachment ) ) {
 				continue;
 			}

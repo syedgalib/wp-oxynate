@@ -1,11 +1,10 @@
-<?php
+<?php 
 
-namespace Oxynate\Controller\Rest_API;
+namespace Oxynate\Controller\Rest_API\Hook;
 
 use Oxynate\Helper;
 
 class Init {
-
     /**
 	 * Constuctor
 	 * 
@@ -13,10 +12,10 @@ class Init {
 	 */
 	public function __construct() {
 
-		// Register Controllers
+        // Register Controllers
         $controllers = $this->get_controllers();
         Helper\Serve::register_services( $controllers );
-
+        
 	}
 
     /**
@@ -26,8 +25,7 @@ class Init {
 	 */
 	protected function get_controllers() {
         return [
-            Oxynate\Init::class,
-            Hook\Init::class,
+            Permissions::class,
         ];
     }
 }

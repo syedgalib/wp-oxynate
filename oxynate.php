@@ -33,3 +33,9 @@ if ( ! function_exists( 'Oxynate' ) ) {
 
 Oxynate();
 
+// add_action( 'init', function() {
+//     $jj = wp_set_object_terms( 110, [ 18, 23 ], WP_OXYNATE_TERM_LOCATION );
+ 
+//     var_dump( $jj );
+// });
+

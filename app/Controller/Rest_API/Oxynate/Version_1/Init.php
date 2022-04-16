@@ -12,7 +12,9 @@ class Init {
      * @return void
 	 */
 	public function __construct() {
+
         add_action( 'rest_api_init', [ $this, 'register_rest_controllers' ] );
+        
 	}
 
     /**
@@ -37,6 +39,8 @@ class Init {
         return [
             Users::class,
             Donation_Request::class,
+            Blood_Groups::class,
+            Locations::class,
             App_Settings::class,
         ];
     }
