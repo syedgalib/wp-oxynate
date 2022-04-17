@@ -174,7 +174,7 @@ class Donation_Request extends Posts_Controller {
 	}
 
 	/**
-	 * Create a single term for a taxonomy.
+	 * Create a single post.
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 * @return WP_REST_Request|WP_Error
@@ -204,7 +204,43 @@ class Donation_Request extends Posts_Controller {
 
 		$base = '/' . $this->namespace . '/' . $this->rest_base;
 
-		$response->header( 'Location', rest_url( $base . '/' . $post->term_id ) );
+		$response->header( 'Location', rest_url( $base . '/' . $post->id ) );
+
+		return $response;
+	}
+
+	/**
+	 * Update a single post.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return WP_REST_Request|WP_Error
+	 */
+	public function update_item( $request ) {
+		$post_type = $this->post_type;
+		$post      = $this->save_post( $request );
+
+		if ( is_wp_error( $post ) ) {
+			return $post;
+		}
+
+		$this->update_additional_fields_for_object( $post, $request );
+
+		/**
+		 * Fires after a single post is created or updated via the REST API.
+		 *
+		 * @param WP_POST         $post      Inserted Post object.
+		 * @param WP_REST_Request $request   Request object.
+		 * @param boolean         $creating  True when creating post, false when updating.
+		 */
+		do_action( "wp_oxynate_rest_insert_{$post_type}", $post, $request, false );
+
+		$data = $this->prepare_item_for_response( $post, $request );
+		$response = rest_ensure_response( $data );
+		$response->set_status( 201 );
+
+		$base = '/' . $this->namespace . '/' . $this->rest_base;
+
+		$response->header( 'Location', rest_url( $base . '/' . $post->id ) );
 
 		return $response;
 	}
@@ -402,7 +438,7 @@ class Donation_Request extends Posts_Controller {
 		$inserting_post_args = [];
 
 		$allowed_key = [ 
-			'id',
+			'ID',
 			'post_type',
 			'post_title',
 			'post_content',
@@ -435,7 +471,7 @@ class Donation_Request extends Posts_Controller {
 
 		// Post ID
 		if ( isset( $request['id'] ) ) {
-			$args['id'] = sanitize_text_field( $request['id'] );
+			$args['ID'] = sanitize_text_field( $request['id'] );
 		}
 
 		// Post Author
@@ -1193,8 +1229,8 @@ class Donation_Request extends Posts_Controller {
 				case 'id':
 					$base_data['id'] = $post->ID;
 					break;
-				case 'name':
-					$base_data['name'] = get_the_title( $post );
+				case 'title':
+					$base_data['title'] = get_the_title( $post );
 					break;
 				case 'slug':
 					$base_data['slug'] = $post->post_name;
