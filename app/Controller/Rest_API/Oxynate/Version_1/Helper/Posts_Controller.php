@@ -16,7 +16,7 @@ abstract class Posts_Controller extends Rest_Base {
     public function get_items_permissions_check( $request ) {
 
         if ( ! $this->check_post_permissions( $this->post_type, 'read' ) ) {
-			return new WP_Error( 'wp_oxynate_rest_cannot_view', __( 'Sorry, you cannot list resources.', 'directorist' ), [ 'status' => rest_authorization_required_code() ] );
+			return new WP_Error( 'wp_oxynate_rest_cannot_view', __( 'Sorry, you cannot list resources.', 'wp-oxynate' ), [ 'status' => rest_authorization_required_code() ] );
 		}
 
         return true;
@@ -240,13 +240,13 @@ abstract class Posts_Controller extends Rest_Base {
 		if ( empty( $images ) ) {
 			// $images[] = array(
 			// 	'id'                => 0,
-			// 	'date_created'      => directorist_rest_prepare_date_response( current_time( 'mysql' ), false ), // Default to now.
-			// 	'date_created_gmt'  => directorist_rest_prepare_date_response( time() ), // Default to now.
-			// 	'date_modified'     => directorist_rest_prepare_date_response( current_time( 'mysql' ), false ),
-			// 	'date_modified_gmt' => directorist_rest_prepare_date_response( time() ),
-			// 	'src'               => directorist_placeholder_img_src(),
-			// 	'name'              => __( 'Placeholder', 'directorist' ),
-			// 	'alt'               => __( 'Placeholder', 'directorist' ),
+			// 	'date_created'      => wp_oxynaterest_prepare_date_response( current_time( 'mysql' ), false ), // Default to now.
+			// 	'date_created_gmt'  => wp_oxynaterest_prepare_date_response( time() ), // Default to now.
+			// 	'date_modified'     => wp_oxynaterest_prepare_date_response( current_time( 'mysql' ), false ),
+			// 	'date_modified_gmt' => wp_oxynaterest_prepare_date_response( time() ),
+			// 	'src'               => wp_oxynateplaceholder_img_src(),
+			// 	'name'              => __( 'Placeholder', 'wp-oxynate' ),
+			// 	'alt'               => __( 'Placeholder', 'wp-oxynate' ),
 			// 	'position'          => 0,
 			// );
 
@@ -254,5 +254,43 @@ abstract class Posts_Controller extends Rest_Base {
 		}
 
 		return $images;
+	}
+
+	/**
+	 * Delete a single post.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function delete_item( $request ) {
+		$post_type = $this->post_type;
+		$force    = isset( $request['force'] ) ? (bool) $request['force'] : false;
+
+		// We don't support trashing for this type, error out.
+		if ( ! $force ) {
+			return new WP_Error( 'wp_oxynate_rest_trash_not_supported', __( 'Resource does not support trashing.', 'wp-oxynate' ), array( 'status' => 501 ) );
+		}
+
+		$post = get_post( (int) $request['id'] );
+
+		$request->set_param( 'context', 'edit' );
+		$response = $this->prepare_item_for_response( $post, $request );
+
+		$retval = wp_delete_post( $post->ID, true );
+
+		if ( ! $retval ) {
+			return new WP_Error( 'wp_oxynate_rest_cannot_delete ' . $request['id'], __( 'The resource cannot be deleted.', 'wp-oxynate' ), array( 'status' => 500 ) );
+		}
+
+		/**
+		 * Fires after a single term is deleted via the REST API.
+		 *
+		 * @param WP_Term          $term     The deleted term.
+		 * @param WP_REST_Response $response The response data.
+		 * @param WP_REST_Request  $request  The request sent to the API.
+		 */
+		do_action( "wp_oxynate_rest_delete_{$post_type}", $post, $response, $request );
+
+		return $response;
 	}
 }

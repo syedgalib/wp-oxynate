@@ -271,14 +271,14 @@ class Donation_Request extends Posts_Controller {
 		// Save Location
 		if ( isset( $args['location'] ) && ! empty( $args['location']['id'] ) ) {
 
-			wp_set_post_terms( $post_id, $args['location']['id'], WP_OXYNATE_TERM_LOCATION );
+			wp_set_object_terms( $post_id, $args['location']['id'], WP_OXYNATE_TERM_LOCATION );
 
 		}
 
 		// Save Blood Group
 		if ( isset( $args['blood_group'] ) && ! empty( $args['blood_group']['id'] ) ) {
 
-			wp_set_post_terms( $post_id, $args['blood_group']['id'], WP_OXYNATE_TERM_BLOOD_GROUP );
+			wp_set_object_terms( $post_id, $args['blood_group']['id'], WP_OXYNATE_TERM_BLOOD_GROUP );
 
 		}
 
@@ -627,6 +627,21 @@ class Donation_Request extends Posts_Controller {
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 				),
+				'status' => array(
+					'description' => __( 'Post status.', 'wp-oxynate' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'gender' => array(
+					'description' => __( 'Gender.', 'wp-oxynate' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'hemoglobin' => array(
+					'description' => __( 'Hemoglobin.', 'wp-oxynate' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+				),
 				'phone' => array(
 					'description' => __( 'Phone number.', 'wp-oxynate' ),
 					'type'        => 'string',
@@ -645,21 +660,6 @@ class Donation_Request extends Posts_Controller {
 				'longitude'              => array(
 					'description' => __( 'Address location longitude.', 'wp-oxynate' ),
 					'type'        => 'number',
-					'context'     => array( 'view', 'edit' ),
-				),
-				'status' => array(
-					'description' => __( 'Post status.', 'wp-oxynate' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit' ),
-				),
-				'hemoglobin' => array(
-					'description' => __( 'Hemoglobin.', 'wp-oxynate' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit' ),
-				),
-				'gender' => array(
-					'description' => __( 'Gender.', 'wp-oxynate' ),
-					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'location' => array(
@@ -1256,6 +1256,10 @@ class Donation_Request extends Posts_Controller {
 				case 'short_description':
 					$base_data['short_description'] = 'view' === $context ? $post->post_excerpt : $post->post_excerpt;
 					break;
+				case 'gender':
+					$base_data['gender'] = get_post_meta( $post->ID, WP_OXYNATE_POST_META_GENDER, true );
+				case 'hemoglobin':
+					$base_data['hemoglobin'] = get_post_meta( $post->ID, WP_OXYNATE_POST_META_HEMOGLOBIN, true );
 				case 'phone':
 					$base_data['phone'] = get_post_meta( $post->ID, WP_OXYNATE_POST_META_PHONE, true );
 					break;
