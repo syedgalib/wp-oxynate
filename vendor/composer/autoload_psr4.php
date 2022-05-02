@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Oxynate\\' => array($baseDir . '/app'),
+    'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
 );

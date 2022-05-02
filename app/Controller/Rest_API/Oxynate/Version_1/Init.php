@@ -37,6 +37,7 @@ class Init {
 	 */
 	protected function get_controllers() {
         return [
+            Authentication::class,
             Users::class,
             Donation_Request::class,
             Blood_Groups::class,

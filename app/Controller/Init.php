@@ -30,8 +30,8 @@ class Init {
             CPT\Init::class,
             Taxonomy\Init::class,
             Admin\Init::class,
-            Hook\Init::class,
             Rest_API\Init::class,
+            Hook\Init::class,
         ];
     }
 }

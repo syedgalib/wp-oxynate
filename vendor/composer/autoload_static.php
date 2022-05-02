@@ -16,12 +16,20 @@ class ComposerStaticInit98ae8520e386a00622a1c03d5878aca0
         array (
             'Oxynate\\' => 8,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Oxynate\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
     );
 
