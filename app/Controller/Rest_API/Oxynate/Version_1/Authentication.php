@@ -102,7 +102,6 @@ class Authentication extends Rest_Base {
 	public function create_token( $request ) {
 
 		$secret_key = defined('JWT_AUTH_SECRET_KEY') ? JWT_AUTH_SECRET_KEY : false;
-        $social_token = $request->get_param('social_token');
 
         /** First thing, check the secret key if not exist return a error*/
         if ( ! $secret_key ) {
@@ -115,11 +114,38 @@ class Authentication extends Rest_Base {
             );
         }
 
-		$email = 'dev-email@flywheel.local';
-		$user  = get_user_by( 'email', $email );
+		$user = null;
 
-		if ( empty( $user ) || is_wp_error( $user  ) ) {
-			$error_code = 403;
+		$auth_type  = $request->get_param('auth-type');
+		$email      = $request->get_param('email');
+		$password   = $request->get_param('password');
+		$auth_token = $request->get_param('auth-token');
+
+		switch ( $auth_type ) {
+			case 'email':
+				$user = $this->authenticate_wp_user( $email, $password );
+				break;
+			case 'google':
+				$user = $this->authenticate_google_user( $auth_token );
+				break;
+			case 'facebook':
+				$user = $this->authenticate_facebook_user( $email );
+				break;
+		}
+
+		if ( empty( $user  ) ) {
+			return new WP_Error(
+				'[jwt_auth] ' . 403,
+				__( 'Couldn\'t authenticate the user', 'wp-oxynate' ),
+				[
+					'status' => 403,
+				]
+			);
+		}
+
+		if ( is_wp_error( $user  ) ) {
+			$error_code = $user->get_error_code();
+
 			return new WP_Error(
 				'[jwt_auth] ' . $error_code,
 				$user->get_error_message($error_code),
@@ -165,6 +191,43 @@ class Authentication extends Rest_Base {
 	}
 
 	/**
+	 * Authenticate WP User
+	 * 
+	 * @return WP_USER|bool
+	 */
+	public function authenticate_wp_user( $email_or_username = '', $password = '' ) {
+		return wp_authenticate( $email_or_username, $password );
+	}
+
+	/**
+	 * Authenticate Google User
+	 * 
+	 * @return WP_USER|bool
+	 */
+	public function authenticate_google_user( $auth_token = '' ) {
+		$user = null;
+
+		$email = 'dev-email@flywheel.local';
+		$user  = wp_oxynate_get_or_create_user_by_email( $email );
+
+		return $user;
+	}
+
+	/**
+	 * Authenticate Facebook User
+	 * 
+	 * @return WP_User|WP_Error
+	 */
+	public function authenticate_facebook_user( $auth_token = '' ) {
+		$user = null;
+
+		$email = 'dev-email@flywheel.local';
+		$user  = wp_oxynate_get_or_create_user_by_email( $email );
+
+		return $user;
+	}
+
+	/**
 	 * Get the query params for collections.
 	 *
 	 * @return array
@@ -174,8 +237,30 @@ class Authentication extends Rest_Base {
 
 		$params['context']['default'] = 'view';
 
-		$params['token'] = array(
-			'description'       => __( 'Signin token', 'wp_oxynate' ),
+		$params['auth-type'] = array(
+			'description'       => __( 'Authentication type', 'wp_oxynate' ),
+			'type'              => 'string',
+			'default'           => null,
+			'required'          => true,
+			'sanitize_callback' => 'sanitize_text_field',
+		);
+
+		$params['email'] = array(
+			'description'       => __( 'Email', 'wp_oxynate' ),
+			'type'              => 'string',
+			'default'           => null,
+			'sanitize_callback' => 'sanitize_text_field',
+		);
+
+		$params['password'] = array(
+			'description'       => __( 'Password', 'wp_oxynate' ),
+			'type'              => 'string',
+			'default'           => null,
+			'sanitize_callback' => 'sanitize_text_field',
+		);
+
+		$params['auth-token'] = array(
+			'description'       => __( 'Social Authentication token', 'wp_oxynate' ),
 			'type'              => 'string',
 			'default'           => null,
 			'sanitize_callback' => 'sanitize_text_field',

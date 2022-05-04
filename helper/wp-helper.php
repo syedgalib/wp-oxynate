@@ -55,3 +55,58 @@ function wp_oxynate_ensure_valid_role( $role = '' ) {
 
     return $role;
 }
+
+
+/**
+ * Get or create user by email
+ * 
+ * @param string $email
+ * @return WP_User|WP_Error
+ */
+function wp_oxynate_get_or_create_user_by_email( $email = '' ) {
+    $user  = get_user_by( 'email', $email );
+
+    if ( empty( $user ) ) {
+        $username = preg_replace( '/@.+$/', '', $email );
+        $username = wp_oxynate_generate_unique_username( $username );
+        $password = wp_generate_password();
+        $user     = wp_create_user( $username, $password, $email );
+        $user     = get_user_by( 'id', $user );
+    }
+
+    if ( empty( $user ) || is_wp_error( $user ) ) {
+        return new WP_Error( 403, __( 'Something went wrong!, please try again.', 'wp-oxynate' ) );
+    }
+
+    return $user;
+}
+
+/**
+ * Generate Unique Username
+ * 
+ * @param string $username
+ * @return string $username
+ */
+function wp_oxynate_generate_unique_username( $username ) {
+
+	$username = sanitize_user( $username );
+
+	static $i;
+	if ( null === $i ) {
+		$i = 1;
+	} else {
+		$i ++;
+	}
+    
+	if ( ! username_exists( $username ) ) {
+		return $username;
+	}
+
+	$new_username = sprintf( '%s-%s', $username, $i );
+
+	if ( ! username_exists( $new_username ) ) {
+		return $new_username;
+	} else {
+		return call_user_func( __FUNCTION__, $username );
+	}
+}
