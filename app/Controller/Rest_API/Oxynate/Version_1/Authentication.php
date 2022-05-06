@@ -116,20 +116,20 @@ class Authentication extends Rest_Base {
 
 		$user = null;
 
-		$auth_type  = $request->get_param('auth-type');
-		$email      = $request->get_param('email');
-		$password   = $request->get_param('password');
-		$auth_token = $request->get_param('auth-token');
+		$auth_type    = $request->get_param('auth-type');
+		$email        = $request->get_param('email');
+		$password     = $request->get_param('password');
+		$access_token = $request->get_param('access-token');
 
 		switch ( $auth_type ) {
 			case 'email':
 				$user = $this->authenticate_wp_user( $email, $password );
 				break;
 			case 'google':
-				$user = $this->authenticate_google_user( $auth_token );
+				$user = $this->authenticate_google_user( $access_token );
 				break;
 			case 'facebook':
-				$user = $this->authenticate_facebook_user( $email );
+				$user = $this->authenticate_facebook_user( $access_token );
 				break;
 		}
 
@@ -177,9 +177,9 @@ class Authentication extends Rest_Base {
 
         /** The token is signed, now create the object with no sensible user data to the client*/
         $data = array(
-            'token' => $token,
-            'user_email' => $user->data->user_email,
-            'user_nicename' => $user->data->user_nicename,
+            'token'             => $token,
+            'user_email'        => $user->data->user_email,
+            'user_nicename'     => $user->data->user_nicename,
             'user_display_name' => $user->data->display_name,
         );
 
@@ -204,7 +204,7 @@ class Authentication extends Rest_Base {
 	 * 
 	 * @return WP_USER|bool
 	 */
-	public function authenticate_google_user( $auth_token = '' ) {
+	public function authenticate_google_user( $access_token = '' ) {
 		$user = null;
 
 		$email = 'dev-email@flywheel.local';
@@ -218,11 +218,36 @@ class Authentication extends Rest_Base {
 	 * 
 	 * @return WP_User|WP_Error
 	 */
-	public function authenticate_facebook_user( $auth_token = '' ) {
+	public function authenticate_facebook_user( $access_token = '' ) {
 		$user = null;
 
-		$email = 'dev-email@flywheel.local';
-		$user  = wp_oxynate_get_or_create_user_by_email( $email );
+		$fields    = 'id,first_name,middle_name,last_name,gender,birthday,email';
+		$graph_url = "https://graph.facebook.com/me?fields={$fields}&access_token={$access_token}";
+		$request   = wp_remote_get( $graph_url );
+
+		$data = json_decode( $request['body'], true );
+
+		if ( $request['response']['code'] !== 200 ) {
+			$message = ( isset( $data['error'] ) && isset( $data['error']['message'] )  ) ? $data['error']['message'] : __( 'Something went wrong', 'wp-oxynate' );
+			return new WP_Error( 403, $message );
+		}
+		
+		$first_name  = ( isset( $data['first_name'] ) ) ? $data['first_name'] : '';
+		$middle_name = ( isset( $data['middle_name'] ) ) ? $data['middle_name'] : '';
+		$first_name  = $first_name . ' ' . $middle_name;
+		$last_name   = ( isset( $data['last_name'] ) ) ? $data['last_name'] : '';
+		$email       = ( isset( $data['email'] ) ) ? $data['email'] : '';
+
+		if ( empty( $email ) ) {
+			return new WP_Error( 403, __( 'Email is required', 'wp-oxynate' ) );
+		}
+
+		$user_meta = [
+			'first_name' => $first_name,
+			'last_name'  => $last_name,
+		];
+
+		$user = wp_oxynate_get_or_create_user_by_email( $email, $user_meta );
 
 		return $user;
 	}
@@ -259,8 +284,8 @@ class Authentication extends Rest_Base {
 			'sanitize_callback' => 'sanitize_text_field',
 		);
 
-		$params['auth-token'] = array(
-			'description'       => __( 'Social Authentication token', 'wp_oxynate' ),
+		$params['access-token'] = array(
+			'description'       => __( 'Access token', 'wp_oxynate' ),
 			'type'              => 'string',
 			'default'           => null,
 			'sanitize_callback' => 'sanitize_text_field',

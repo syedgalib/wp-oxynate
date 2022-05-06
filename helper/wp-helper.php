@@ -63,15 +63,24 @@ function wp_oxynate_ensure_valid_role( $role = '' ) {
  * @param string $email
  * @return WP_User|WP_Error
  */
-function wp_oxynate_get_or_create_user_by_email( $email = '' ) {
+function wp_oxynate_get_or_create_user_by_email( $email = '', $user_meta = [] ) {
     $user  = get_user_by( 'email', $email );
 
     if ( empty( $user ) ) {
         $username = preg_replace( '/@.+$/', '', $email );
         $username = wp_oxynate_generate_unique_username( $username );
         $password = wp_generate_password();
-        $user     = wp_create_user( $username, $password, $email );
-        $user     = get_user_by( 'id', $user );
+        $user_id  = wp_create_user( $username, $password, $email );
+        
+        // Update User Meta
+        if ( ! empty( $user_meta ) ) {
+            foreach( $user_meta as $meta_key => $meta_value ) {
+                update_user_meta( $user_id, $meta_key, $meta_value);
+            }
+        }
+
+        $user = get_user_by( 'id', $user_id );
+
     }
 
     if ( empty( $user ) || is_wp_error( $user ) ) {
