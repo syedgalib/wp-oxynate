@@ -29,6 +29,24 @@ class Model {
             'value' => self::get_option_value( 'admin_phone', '' ),
         ];
 
+        $option_fields['twilio_sid'] = [
+            'type'  => 'text',
+            'label' => __( 'Twilio : SID', 'wp-oxynate' ),
+            'value' => self::get_option_value( 'twilio_sid', '' ),
+        ];
+
+        $option_fields['twilio_token'] = [
+            'type'  => 'text',
+            'label' => __( 'Twilio : Token', 'wp-oxynate' ),
+            'value' => self::get_option_value( 'twilio_token', '' ),
+        ];
+
+        $option_fields['twilio_from_phone'] = [
+            'type'  => 'text',
+            'label' => __( 'Twilio : From Phone', 'wp-oxynate' ),
+            'value' => self::get_option_value( 'twilio_from_phone', '' ),
+        ];
+
         return $option_fields;
     }
 

@@ -17,6 +17,7 @@
         }
     ],
     "require": {
-        "firebase/php-jwt": "^6.1"
+        "firebase/php-jwt": "^6.1",
+        "twilio/sdk": "^6.37"
     }
 }

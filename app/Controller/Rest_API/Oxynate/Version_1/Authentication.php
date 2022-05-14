@@ -2,11 +2,14 @@
 
 namespace Oxynate\Controller\Rest_API\Oxynate\Version_1;
 
+use Exception;
 use \WP_REST_Server;
 use \WP_Error;
 use Firebase\JWT\JWT;
+use Twilio\Rest\Client as TwilioClient;
 
 use Oxynate\Controller\Rest_API\Oxynate\Version_1\Helper\Rest_Base;
+use Oxynate\Module\Settings_Panel\Model as App_Settings;
 
 class Authentication extends Rest_Base {
 
@@ -30,6 +33,57 @@ class Authentication extends Rest_Base {
 					'callback'            => [ $this, 'create_token' ],
 					'permission_callback' => [ $this, 'create_item_permissions_check' ],
 					'args'                => $this->get_collection_params(),
+				),
+			
+			'schema' => array( $this, 'get_public_item_schema' ),
+		) );
+		
+		register_rest_route( 
+			$this->namespace, 
+			'/' . $this->rest_base . '/send-otp',
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'send_otp' ],
+					'permission_callback' => [ $this, 'create_item_permissions_check' ],
+					'args'                => [
+						'phone' => [
+							'description'       => __( 'Phone', 'wp_oxynate' ),
+							'type'              => 'string',
+							'default'           => null,
+							'required'          => true,
+							'sanitize_callback' => 'sanitize_text_field',
+						],
+					],
+				),
+			
+			'schema' => array( $this, 'get_public_item_schema' ),
+		) );
+		
+		register_rest_route( 
+			$this->namespace, 
+			'/' . $this->rest_base . '/verify-otp',
+			array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'verify_otp' ],
+					'permission_callback' => [ $this, 'create_item_permissions_check' ],
+					'args'                => [
+						'phone' => [
+							'description'       => __( 'Phone', 'wp_oxynate' ),
+							'type'              => 'string',
+							'default'           => null,
+							'required'          => true,
+							'sanitize_callback' => 'sanitize_text_field',
+						],
+						'otp' => [
+							'description'       => __( 'OTP', 'wp_oxynate' ),
+							'type'              => 'string',
+							'default'           => null,
+							'required'          => true,
+							'sanitize_callback' => 'sanitize_text_field',
+						],
+					],
 				),
 			
 			'schema' => array( $this, 'get_public_item_schema' ),
@@ -100,20 +154,6 @@ class Authentication extends Rest_Base {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function create_token( $request ) {
-
-		$secret_key = defined('JWT_AUTH_SECRET_KEY') ? JWT_AUTH_SECRET_KEY : false;
-
-        /** First thing, check the secret key if not exist return a error*/
-        if ( ! $secret_key ) {
-            return new WP_Error(
-                'jwt_auth_bad_config',
-                __('JWT is not configurated properly, please contact the admin', 'wp-api-jwt-auth'),
-                [
-                    'status' => 403,
-				]
-            );
-        }
-
 		$user = null;
 
 		$sign_in_type = $request->get_param('sign-in-type');
@@ -155,7 +195,33 @@ class Authentication extends Rest_Base {
 			);
 		}
 
-        /** Valid credentials, the user exists create the according Token */
+        $response = $this->generate_auth_token( $user );
+		$response = rest_ensure_response( $response );
+
+		return $response;
+	}
+
+	/**
+	 * Generate Auth Token
+	 * 
+	 * @param WP_User $user
+	 * @return WP_Error|array
+	 */
+	public function generate_auth_token( $user ) {
+		$secret_key = defined('JWT_AUTH_SECRET_KEY') ? JWT_AUTH_SECRET_KEY : false;
+
+        /** First thing, check the secret key if not exist return a error*/
+        if ( ! $secret_key ) {
+            return new WP_Error(
+                'jwt_auth_bad_config',
+                __('JWT is not configurated properly, please contact the admin', 'wp-api-jwt-auth'),
+                [
+                    'status' => 403,
+				]
+            );
+        }
+
+		/** Valid credentials, the user exists create the according Token */
         $issuedAt  = time();
         $notBefore = apply_filters('jwt_auth_not_before', $issuedAt, $issuedAt );
         $expire    = apply_filters('jwt_auth_expire', $issuedAt + ( DAY_IN_SECONDS * 7 ), $issuedAt );
@@ -185,7 +251,6 @@ class Authentication extends Rest_Base {
 
         /** Let the user modify the data before send it back */
         $response = apply_filters('jwt_auth_token_before_dispatch', $data, $user);
-		$response = rest_ensure_response( $response );
 
 		return $response;
 	}
@@ -246,6 +311,109 @@ class Authentication extends Rest_Base {
 		$user = wp_oxynate_get_or_create_user_by_email( $email, $user_meta );
 
 		return $user;
+	}
+
+	/**
+	 * Send OTP
+	 * 
+	 * @return array|WP_Error
+	 */
+	public function send_otp( $request ) {
+		$settings = App_Settings::get_options();
+		$phone    = $request->get_param('phone');
+
+		if ( empty( $phone ) ) {
+			return new WP_Error( 403, __( 'Phone number is required', 'wp-oxynate' ) );
+		}
+
+		$sid   = ( isset( $settings['twilio_sid'] ) ) ? $settings['twilio_sid'] : '';
+		$token = ( isset( $settings['twilio_token'] ) ) ? $settings['twilio_token'] : '';
+
+		$client = new TwilioClient( $sid, $token );
+		
+		$app_name = 'Oxynate';
+		$otp      = random_int( 1000, 9999 );
+
+		$from    = ( isset( $settings['twilio_from_phone'] ) ) ? $settings['twilio_from_phone'] : '';
+		$to      = '+' . $phone;
+		$message = "{$otp} is your {$app_name} veryfication code";
+
+		$transient_key      = "wp_oxynate_otp_{$phone}";
+		$transient_duration = MINUTE_IN_SECONDS * 10;
+
+		set_transient( $transient_key, $otp, $transient_duration );
+
+		try {
+			$client->messages->create(
+				$to, 
+				[ 'from' => $from, 'body' => $message ]
+			);
+
+			return rest_ensure_response([
+				'success' => true,
+				'otp'     => $otp,
+				'message' => __( 'The OTP has been sent successfuly' )
+			]);
+			
+		} catch ( Exception $e ) {
+			return new WP_Error( 403, $e->getMessage() );
+		}
+	}
+
+	/**
+	 * Verify OTP
+	 * 
+	 * @return array|WP_Error
+	 */
+	public function verify_otp( $request ) {
+		$phone = $request->get_param('phone');
+		$otp   = $request->get_param('otp');
+
+		if ( empty( $phone ) ) {
+			return new WP_Error( 403, __( 'Phone number is required', 'wp-oxynate' ) );
+		}
+
+		if ( empty( $otp ) ) {
+			return new WP_Error( 403, __( 'The OTP is required', 'wp-oxynate' ) );
+		}
+
+		$transient_key = "wp_oxynate_otp_{$phone}";
+		$original_otp  = get_transient( $transient_key );
+
+		if ( ( string ) $otp !== ( string ) $original_otp ) {
+			return new WP_Error( 403, __( 'The OTP is not valid', 'wp-oxynate' ) );
+		}
+
+		$user = wp_oxynate_get_or_create_user_by_phone( $phone );
+
+		if ( empty( $user  ) ) {
+			return new WP_Error(
+				'[jwt_auth] ' . 403,
+				__( 'Couldn\'t authenticate the user', 'wp-oxynate' ),
+				[
+					'status' => 403,
+				]
+			);
+		}
+
+		if ( is_wp_error( $user  ) ) {
+			$error_code = $user->get_error_code();
+
+			return new WP_Error(
+				'[jwt_auth] ' . $error_code,
+				$user->get_error_message($error_code),
+				array(
+					'status' => 403,
+				)
+			);
+		}
+
+		$response = $this->generate_auth_token( $user );
+		$response = rest_ensure_response( $response );
+
+		delete_transient( $transient_key );
+
+		return $response;
 	}
 
 	/**

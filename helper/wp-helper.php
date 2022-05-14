@@ -91,6 +91,38 @@ function wp_oxynate_get_or_create_user_by_email( $email = '', $user_meta = [] ) 
 }
 
 /**
+ * Get or create user by phone
+ * 
+ * @param string $phone
+ * @return WP_User|WP_Error
+ */
+function wp_oxynate_get_or_create_user_by_phone( $phone = '', $user_meta = [] ) {
+    $user  = get_user_by( 'login', $phone );
+
+    if ( empty( $user ) ) {
+        $username = $phone;
+        $password = wp_generate_password();
+        $user_id  = wp_create_user( $username, $password );
+        
+        // Update User Meta
+        if ( ! empty( $user_meta ) ) {
+            foreach( $user_meta as $meta_key => $meta_value ) {
+                update_user_meta( $user_id, $meta_key, $meta_value);
+            }
+        }
+
+        $user = get_user_by( 'login', $user_id );
+
+    }
+
+    if ( empty( $user ) || is_wp_error( $user ) ) {
+        return new WP_Error( 403, __( 'Something went wrong!, please try again.', 'wp-oxynate' ) );
+    }
+
+    return $user;
+}
+
+/**
  * Generate Unique Username
  * 
  * @param string $username
