@@ -116,12 +116,12 @@ class Authentication extends Rest_Base {
 
 		$user = null;
 
-		$auth_type    = $request->get_param('auth-type');
+		$sign_in_type = $request->get_param('sign-in-type');
 		$email        = $request->get_param('email');
 		$password     = $request->get_param('password');
 		$access_token = $request->get_param('access-token');
 
-		switch ( $auth_type ) {
+		switch ( $sign_in_type ) {
 			case 'email':
 				$user = $this->authenticate_wp_user( $email, $password );
 				break;
@@ -207,8 +207,43 @@ class Authentication extends Rest_Base {
 	public function authenticate_google_user( $access_token = '' ) {
 		$user = null;
 
-		$email = 'dev-email@flywheel.local';
-		$user  = wp_oxynate_get_or_create_user_by_email( $email );
+		$fields    = 'emailAddresses,names,phoneNumbers,photos';
+		$graph_url = "https://people.googleapis.com/v1/people/me?sources=READ_SOURCE_TYPE_PROFILE&personFields={$fields}&access_token={$access_token}";
+		$request   = wp_remote_get( $graph_url );
+
+		$data = json_decode( $request['body'], true );
+
+		if ( $request['response']['code'] !== 200 ) {
+			$message = ( isset( $data['error'] ) && isset( $data['error']['message'] )  ) ? $data['error']['message'] : __( 'Something went wrong', 'wp-oxynate' );
+			return new WP_Error( 403, $message );
+		}
+
+		$email       = '';
+		$first_name  = '';
+		$last_name   = '';
+
+		// Email
+		if ( ! empty( $data['emailAddresses'] ) && is_array( $data['emailAddresses'] ) ) {
+			$email = ( isset( $data['emailAddresses'][0]['value'] ) ) ? $data['emailAddresses'][0]['value'] : '';
+		}
+
+		// Name
+		if ( ! empty( $data['names'] ) && is_array( $data['names'] ) ) {
+			$name       = $data['names'][0];
+			$first_name = ( isset( $name['givenName'] ) ) ? $name['givenName'] : '';
+			$last_name  = ( isset( $name['familyName'] ) ) ? $name['familyName'] : '';
+		}
+
+		if ( empty( $email ) ) {
+			return new WP_Error( 403, __( 'Email is required', 'wp-oxynate' ) );
+		}
+
+		$user_meta = [
+			'first_name' => $first_name,
+			'last_name'  => $last_name,
+		];
+
+		$user = wp_oxynate_get_or_create_user_by_email( $email, $user_meta );
 
 		return $user;
 	}
@@ -262,8 +297,8 @@ class Authentication extends Rest_Base {
 
 		$params['context']['default'] = 'view';
 
-		$params['auth-type'] = array(
-			'description'       => __( 'Authentication type', 'wp_oxynate' ),
+		$params['sign-in-type'] = array(
+			'description'       => __( 'Sign in type', 'wp_oxynate' ),
 			'type'              => 'string',
 			'default'           => null,
 			'required'          => true,

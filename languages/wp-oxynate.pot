@@ -1,0 +1,442 @@
+# Copyright (C) 2022 Simple Todo
+# This file is distributed under the same license as the Simple Todo package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Todo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../app/Controller/CPT/Donation_Request.php:23
+msgid "Oxynate"
+msgstr ""
+
+#: ../app/Controller/CPT/Donation_Request.php:24
+msgid "Donation Request"
+msgstr ""
+
+#: ../app/Controller/CPT/Donation_Request.php:25
+msgid "Donation Requests"
+msgstr ""
+
+#: ../app/Controller/CPT/On_Boarding_Pages.php:23
+msgid "On Boarding Page"
+msgstr ""
+
+#: ../app/Controller/CPT/On_Boarding_Pages.php:24
+msgid "On Boarding Pages"
+msgstr ""
+
+#: ../app/Controller/Taxonomy/Blood_Group.php:23, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:749
+msgid "Blood Group"
+msgstr ""
+
+#: ../app/Controller/Taxonomy/Blood_Group.php:24
+msgid "Blood Groups"
+msgstr ""
+
+#: ../app/Controller/Taxonomy/Location.php:23
+msgid "Location"
+msgstr ""
+
+#: ../app/Controller/Taxonomy/Location.php:24
+msgid "Locations"
+msgstr ""
+
+#: ../app/Module/Settings_Panel/Model.php:22
+msgid "App Name"
+msgstr ""
+
+#: ../app/Module/Settings_Panel/Model.php:28
+msgid "Admin Phone"
+msgstr ""
+
+#: ../app/Module/Settings_Panel/Model.php:63
+msgid "Nothing to update"
+msgstr ""
+
+#: ../app/Module/Settings_Panel/Model.php:75
+msgid "The settings has been updated successfuly"
+msgstr ""
+
+#: ../app/Module/Settings_Panel/Model.php:96
+msgid "Nothing to delete"
+msgstr ""
+
+#: ../app/Module/Settings_Panel/Model.php:109
+msgid "The settings has been deleted successfuly"
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:139
+msgid "Couldn't authenticate the user"
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:217, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:266
+msgid "Something went wrong"
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:238, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:277
+msgid "Email is required"
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Blood_Groups.php:73, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:63, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:573, ../app/Controller/Rest_API/Oxynate/Version_1/Locations.php:73, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:70
+msgid "Unique identifier for the resource."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Blood_Groups.php:79, ../app/Controller/Rest_API/Oxynate/Version_1/Locations.php:79
+msgid "Category name."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Blood_Groups.php:87, ../app/Controller/Rest_API/Oxynate/Version_1/Locations.php:87
+msgid "An alphanumeric identifier for the resource unique to its type."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Blood_Groups.php:95, ../app/Controller/Rest_API/Oxynate/Version_1/Locations.php:95
+msgid "The ID for the parent of the resource."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Blood_Groups.php:100, ../app/Controller/Rest_API/Oxynate/Version_1/Locations.php:100
+msgid "HTML description of the resource."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Blood_Groups.php:108, ../app/Controller/Rest_API/Oxynate/Version_1/Locations.php:108
+msgid "Number of published listings for the resource."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:93, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:96
+msgid "Required to be true, as resource does not support trashing."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:163
+msgid "Invalid ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:260
+msgid "Please provide required fields to save the post."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:579
+msgid "Post title."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:585
+msgid "Post slug."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:590
+msgid "Post URL."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:597
+msgid "The date the post was created, in the site's timezone."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:603
+msgid "The date the post was created, as GMT."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:609
+msgid "The date the post was last modified, in the site's timezone."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:615
+msgid "The date the post was last modified, as GMT."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:621
+msgid "Post description."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:626
+msgid "Post short description."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:631
+msgid "Post status."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:636
+msgid "Gender."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:641
+msgid "Hemoglobin."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:646
+msgid "Phone number."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:651
+msgid "Listing address."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:656
+msgid "Address location latitude."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:661
+msgid "Address location longitude."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:666
+msgid "Location of the post."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:673, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:756
+msgid "Location ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:678, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:761
+msgid "Location name."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:684, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:767
+msgid "Location slug."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:693
+msgid "District of the post."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:701
+msgid "District ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:706
+msgid "District name."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:712
+msgid "District slug."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:721
+msgid "Area of the post."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:729
+msgid "Area ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:734
+msgid "Area name."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:740
+msgid "Area slug."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:776
+msgid "List of images."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:783
+msgid "Image ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:788
+msgid "The date the image was created, in the site's timezone."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:794
+msgid "The date the image was created, as GMT."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:800
+msgid "The date the image was last modified, in the site's timezone."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:806
+msgid "The date the image was last modified, as GMT."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:812
+msgid "Image URL."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:818
+msgid "Image name."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:823
+msgid "Image alternative text."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:828
+msgid "Image position. 0 means that the image is featured."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:836
+msgid "Menu order, used to custom sort listings."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:841
+msgid "Listing author id."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:846
+msgid "Meta data."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:853
+msgid "Meta ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:859
+msgid "Meta key."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:864
+msgid "Meta value."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:888, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:682
+msgid "Ensure result set excludes specific IDs."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:894
+msgid "Limit result set to specific IDs."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:900
+msgid "Offset the result set by a specific number of items."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:907, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:706
+msgid "Order sort attribute ascending or descending."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:914
+msgid "Sort collection by object attribute."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:921
+msgid "Limit result set to posts with a specific slug."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:927
+msgid "Limit result set to posts assigned a specific status."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:934
+msgid "Limit result set to posts assigned a specific location ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:940
+msgid "Limit result set to posts assigned a specific blood group"
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:946
+msgid "Limit result set to posts specific to author ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Posts_Controller.php:19, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:121
+msgid "Sorry, you cannot list resources."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Posts_Controller.php:34, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:144
+msgid "Sorry, you are not allowed to create resources."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Posts_Controller.php:51, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:167
+msgid "Sorry, you cannot view this resource."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Posts_Controller.php:68, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:190
+msgid "Sorry, you are not allowed to edit this resource."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Posts_Controller.php:85, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:213
+msgid "Sorry, you are not allowed to delete this resource."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Posts_Controller.php:271, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:535
+msgid "Resource does not support trashing."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Posts_Controller.php:282, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:545
+msgid "The resource cannot be deleted."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:54
+msgid "Name for the resource."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:230
+msgid "Taxonomy does not exist."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:239
+msgid "Resource does not exist."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:392, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:486
+msgid "Can not set resource parent, taxonomy is not hierarchical."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:691
+msgid "Limit result set to specific ids."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:700
+msgid "Offset the result set by a specific number of items. Applies to hierarchical taxonomies only."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:717
+msgid "Sort collection by resource attribute."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:733
+msgid "Whether to hide resources not assigned to any posts."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:739
+msgid "Limit result set to resources assigned to a specific parent. Applies to hierarchical taxonomies only."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:745
+msgid "Limit result set to resources assigned to a specific post."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:751
+msgid "Limit result set to resources with a specific slug."
+msgstr ""
+
+#: ../app.php:34, ../app.php:39
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#. translators: %s: image URL
+#: ../helper/post-helper.php:113
+msgid "Invalid URL %s."
+msgstr ""
+
+#. translators: %s: image URL
+#: ../helper/post-helper.php:135
+msgid "Error getting remote image %s."
+msgstr ""
+
+#. translators: %s: error message
+#: ../helper/post-helper.php:137
+msgid "Error: %s"
+msgstr ""
+
+#. translators: %s: error message
+#: ../helper/post-helper.php:156
+msgid "Invalid image: %s"
+msgstr ""
+
+#: ../helper/wp-helper.php:87
+msgid "Something went wrong!, please try again."
+msgstr ""
+
+#: ../view/Admin/Menu_Pages/Oxynate/settings-page.php:1
+msgid "Settings"
+msgstr ""
