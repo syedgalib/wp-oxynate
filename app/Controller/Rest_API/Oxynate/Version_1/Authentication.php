@@ -351,6 +351,7 @@ class Authentication extends Rest_Base {
 
 			return rest_ensure_response([
 				'success' => true,
+				'phone'   => $phone,
 				'otp'     => $otp,
 				'message' => __( 'The OTP has been sent successfuly' )
 			]);
