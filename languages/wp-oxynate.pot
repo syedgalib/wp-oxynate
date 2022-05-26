@@ -85,27 +85,27 @@ msgstr ""
 msgid "The settings has been deleted successfuly"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:179, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:392
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:179, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:393
 msgid "Couldn't authenticate the user"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:282, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:434
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:282, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:435
 msgid "Something went wrong"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:303, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:445
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:303, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:446
 msgid "Email is required"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:326, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:373
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:326, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:374
 msgid "Phone number is required"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:377
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:378
 msgid "The OTP is required"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:384
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:385
 msgid "The OTP is not valid"
 msgstr ""
 

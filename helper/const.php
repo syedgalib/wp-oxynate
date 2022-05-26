@@ -33,7 +33,7 @@ defined( 'WP_OXYNATE_USER_META_PHONE' ) || define( 'WP_OXYNATE_USER_META_PHONE',
 defined( 'WP_OXYNATE_USER_META_LOCATION' ) || define( 'WP_OXYNATE_USER_META_LOCATION', 'wp_oxynate_location' );
 defined( 'WP_OXYNATE_USER_META_ADDRESS' ) || define( 'WP_OXYNATE_USER_META_ADDRESS', 'wp_oxynate_address' );
 defined( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER' ) || define( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER', 'wp_oxynate_is_public_contact_number' );
-defined( 'WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION' ) || define( 'WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION', 'wp_oxynate_is_available_for_donation' );
+defined( 'WP_OXYNATE_USER_META_IS_DONOR' ) || define( 'WP_OXYNATE_USER_META_IS_DONOR', 'wp_oxynate_is_donor' );
 
 // Post Meta Keys
 defined( 'WP_OXYNATE_POST_META_GENDER' ) || define( 'WP_OXYNATE_POST_META_GENDER', 'wp_oxynate_gender' );

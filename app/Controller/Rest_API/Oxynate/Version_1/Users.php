@@ -167,9 +167,6 @@ class Users extends Rest_Base {
 	 * @return WP_Error|boolean
 	 */
 	public function update_item_permissions_check( $request ) {
-
-		return true;
-
 		$permissions = $this->check_permissions( $request, 'edit' );
 		if ( is_wp_error( $permissions ) ) {
 			return $permissions;
@@ -281,11 +278,11 @@ class Users extends Rest_Base {
 		}
 
 		// Filter by email.
-		if ( ! empty( $request['is_available_for_donation'] ) ) {
+		if ( ! empty( $request['is_donor'] ) ) {
 			$prepared_args['meta_query'] = [
 				[
-					'key'     => WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION,
-					'value'   => $request['is_available_for_donation'],
+					'key'     => WP_OXYNATE_USER_META_IS_DONOR,
+					'value'   => $request['is_donor'],
 					'compare' => '=',
 				]
 			];
@@ -583,7 +580,7 @@ class Users extends Rest_Base {
 			'location'                 => get_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, true ),
 			'address'                  => get_user_meta( $id, WP_OXYNATE_USER_META_ADDRESS, true ),
 			'is_public_contact_number' => get_user_meta( $id, WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER, true ),
-			'is_available_for_donation' => get_user_meta( $id, WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION, true ),
+			'is_donor'                 => get_user_meta( $id, WP_OXYNATE_USER_META_IS_DONOR, true ),
 			'avater'                   => null,
 			'bookmarks'                => null,
 			'roles'                    => array_values( $user->roles ),
@@ -651,7 +648,7 @@ class Users extends Rest_Base {
 		}
 
 		// Save blood group.
-		if ( isset( $request['blood_group'] ) ) {
+		if ( isset( $request['blood_group'] ) && is_numeric( $request['blood_group'] ) ) {
 			update_user_meta( $id, WP_OXYNATE_USER_META_BLOOD_GROUP, wp_oxynate_clean( $request['blood_group'] ) );
 		}
 
@@ -661,7 +658,7 @@ class Users extends Rest_Base {
 		}
 
 		// Save lcoation.
-		if ( isset( $request['location'] ) ) {
+		if ( isset( $request['location'] ) && is_numeric( $request['blood_group'] ) ) {
 			update_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, wp_oxynate_clean( $request['location'] ) );
 		}
 
@@ -675,10 +672,10 @@ class Users extends Rest_Base {
 			update_user_meta( $id, WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER, wp_oxynate_clean( $request['is_public_contact_number'] ) );
 		}
 
-		// Is available for donation.
-		if ( isset( $request['is_available_for_donation'] ) ) {
-			$is_available_for_donation = oxynate_is_truthy( $request['is_available_for_donation'] ) ? 1 : 0;
-			update_user_meta( $id, WP_OXYNATE_USER_META_IS_AVAILABLE_FOR_DONATION, $is_available_for_donation );
+		// Is donor.
+		if ( isset( $request['is_donor'] ) ) {
+			$is_donor = oxynate_is_truthy( $request['is_donor'] ) ? 1 : 0;
+			update_user_meta( $id, WP_OXYNATE_USER_META_IS_DONOR, $is_donor );
 		}
 
 		// Save user avater.
