@@ -576,7 +576,10 @@ class Users extends Rest_Base {
 			'email'                    => $user->user_email,
 			'url'                      => $user->user_url,
 			'blood_group'              => get_user_meta( $id, WP_OXYNATE_USER_META_BLOOD_GROUP, true ),
+			'gender'                   => get_user_meta( $id, WP_OXYNATE_USER_META_GENDER, true ),
+			'hemoglobin'               => get_user_meta( $id, WP_OXYNATE_USER_META_HEMOGLOBIN, true ),
 			'phone'                    => get_user_meta( $id, WP_OXYNATE_USER_META_PHONE, true ),
+			'last_donation_date'       => get_user_meta( $id, WP_OXYNATE_USER_META_LAST_DONATION_DATE, true ),
 			'location'                 => get_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, true ),
 			'address'                  => get_user_meta( $id, WP_OXYNATE_USER_META_ADDRESS, true ),
 			'is_public_contact_number' => get_user_meta( $id, WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER, true ),
@@ -585,6 +588,46 @@ class Users extends Rest_Base {
 			'bookmarks'                => null,
 			'roles'                    => array_values( $user->roles ),
 		);
+
+		$string_data_types = [
+			'gender',
+			'phone',
+			'last_donation_date',
+			'address',
+		];
+
+		$int_data_types = [
+			'blood_group',
+			'hemoglobin',
+			'location',
+		];
+
+		$bool_data_types = [
+			'is_public_contact_number',
+			'is_donor',
+		];
+
+		// Sanitize Data
+		foreach( $data as $key => $value ) {
+
+			// Sanitize string data types
+			if ( in_array( $key, $string_data_types ) ) {
+				$value = ( ! empty( $value ) ) ? ( string ) $value : null;
+			}
+
+			// Sanitize integer data types
+			if ( in_array( $key, $int_data_types ) ) {
+				$value = ( ! empty( $value ) ) ? ( int ) $value : null;
+			}
+
+			// Sanitize boolean data types
+			if ( in_array( $key, $bool_data_types ) ) {
+				$value = ( ! empty( $value ) ) ? oxynate_is_truthy( $value ) : false;
+			}
+
+			$data[ $key ] = $value;
+
+		}
 
 		// User Avater.
 		$image_id = get_user_meta( $id, WP_OXYNATE_USER_META_AVATER, true );
@@ -647,18 +690,33 @@ class Users extends Rest_Base {
 			update_user_meta( $id, 'description', wp_oxynate_clean( $request['description'] ) );
 		}
 
+		// Save gender.
+		if ( isset( $request['gender'] ) ) {
+			update_user_meta( $id, WP_OXYNATE_USER_META_GENDER, wp_oxynate_clean( $request['gender'] ) );
+		}
+
 		// Save blood group.
 		if ( isset( $request['blood_group'] ) && is_numeric( $request['blood_group'] ) ) {
 			update_user_meta( $id, WP_OXYNATE_USER_META_BLOOD_GROUP, wp_oxynate_clean( $request['blood_group'] ) );
 		}
 
+		// Save hemoglobin.
+		if ( isset( $request['hemoglobin'] ) && is_numeric( $request['hemoglobin'] ) ) {
+			update_user_meta( $id, WP_OXYNATE_USER_META_HEMOGLOBIN, wp_oxynate_clean( $request['hemoglobin'] ) );
+		}
+
 		// Save phone number.
-		if ( isset( $request['phone'] ) ) {
+		if ( isset( $request['phone'] ) && is_numeric( $request['phone'] ) ) {
 			update_user_meta( $id, WP_OXYNATE_USER_META_PHONE, wp_oxynate_clean( $request['phone'] ) );
 		}
 
+		// Save email.
+		if ( isset( $request['email'] ) && is_numeric( $request['email'] ) ) {
+			update_user_meta( $id, 'email', wp_oxynate_clean( $request['email'] ) );
+		}
+
 		// Save lcoation.
-		if ( isset( $request['location'] ) && is_numeric( $request['blood_group'] ) ) {
+		if ( isset( $request['location'] ) && is_numeric( $request['location'] ) ) {
 			update_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, wp_oxynate_clean( $request['location'] ) );
 		}
 
@@ -667,15 +725,21 @@ class Users extends Rest_Base {
 			update_user_meta( $id, WP_OXYNATE_USER_META_ADDRESS, wp_oxynate_clean( $request['address'] ) );
 		}
 
-		// Save is public contact number.
-		if ( isset( $request['is_public_contact_number'] ) ) {
-			update_user_meta( $id, WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER, wp_oxynate_clean( $request['is_public_contact_number'] ) );
-		}
-
 		// Is donor.
 		if ( isset( $request['is_donor'] ) ) {
 			$is_donor = oxynate_is_truthy( $request['is_donor'] ) ? 1 : 0;
 			update_user_meta( $id, WP_OXYNATE_USER_META_IS_DONOR, $is_donor );
+		}
+
+		// Last donation date.
+		if ( isset( $request['last_donation_date'] ) ) {
+			update_user_meta( $id, WP_OXYNATE_USER_META_LAST_DONATION_DATE, $request['last_donation_date'] );
+		}
+
+		// Save is public contact number.
+		if ( isset( $request['is_public_contact_number'] ) ) {
+			$is_public_contact_number = oxynate_is_truthy( $request['is_public_contact_number'] ) ? 1 : 0;
+			update_user_meta( $id, WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER, $is_public_contact_number );
 		}
 
 		// Save user avater.
@@ -789,6 +853,42 @@ class Users extends Rest_Base {
 					'format'      => 'email',
 					'context'     => array( 'view', 'edit' ),
 				),
+				'gender' => array(
+					'description' => __( 'The user gender.', 'wp_oxynate' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'blood_group' => array(
+					'description' => __( 'The user blood group.', 'wp_oxynate' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'hemoglobin' => array(
+					'description' => __( 'The user blood hemoglobin.', 'wp_oxynate' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'location' => array(
+					'description' => __( 'The user location.', 'wp_oxynate' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'is_donor' => array(
+					'description' => __( 'If user is available for blood donation.', 'wp_oxynate' ),
+					'type'        => 'boolean',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'last_donation_date' => array(
+					'description' => __( 'User last donation date.', 'wp_oxynate' ),
+					'type'        => 'string',
+					'format'      => 'date',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'is_public_contact_number' => array(
+					'description' => __( 'If contact number is public or not.', 'wp_oxynate' ),
+					'type'        => 'boolean',
+					'context'     => array( 'view', 'edit' ),
+				),
 				'url' => array(
 					'description' => __( 'The website url for the user.', 'wp_oxynate' ),
 					'type'        => 'string',
@@ -892,11 +992,11 @@ class Users extends Rest_Base {
 					'context'     => array( 'view' ),
 					'readonly'    => true,
 				),
-				'listings_count' => array(
-					'description' => __( 'Quantity of listings created by the user.', 'wp_oxynate' ),
+				'donation_request_count' => array(
+					'description' => __( 'Quantity of donation request created by the user.', 'wp_oxynate' ),
 					'type'        => 'integer',
 					'default'     => 0,
-					'context'     => array( 'view', 'edit' ),
+					'context'     => array( 'view' ),
 					'readonly'    => true,
 				),
 			),

@@ -28,12 +28,15 @@ defined( 'WP_OXYNATE_TERM_BLOOD_GROUP' ) || define( 'WP_OXYNATE_TERM_BLOOD_GROUP
 
 // Users Meta Keys
 defined( 'WP_OXYNATE_USER_META_AVATER' ) || define( 'WP_OXYNATE_USER_META_AVATER', 'wp_oxynate_user_avater' );
+defined( 'WP_OXYNATE_USER_META_GENDER' ) || define( 'WP_OXYNATE_USER_META_GENDER', 'wp_oxynate_gender' );
 defined( 'WP_OXYNATE_USER_META_BLOOD_GROUP' ) || define( 'WP_OXYNATE_USER_META_BLOOD_GROUP', 'wp_oxynate_blood_group' );
+defined( 'WP_OXYNATE_USER_META_HEMOGLOBIN' ) || define( 'WP_OXYNATE_USER_META_HEMOGLOBIN', 'wp_oxynate_hemoglobin' );
 defined( 'WP_OXYNATE_USER_META_PHONE' ) || define( 'WP_OXYNATE_USER_META_PHONE', 'wp_oxynate_phone' );
 defined( 'WP_OXYNATE_USER_META_LOCATION' ) || define( 'WP_OXYNATE_USER_META_LOCATION', 'wp_oxynate_location' );
 defined( 'WP_OXYNATE_USER_META_ADDRESS' ) || define( 'WP_OXYNATE_USER_META_ADDRESS', 'wp_oxynate_address' );
-defined( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER' ) || define( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER', 'wp_oxynate_is_public_contact_number' );
 defined( 'WP_OXYNATE_USER_META_IS_DONOR' ) || define( 'WP_OXYNATE_USER_META_IS_DONOR', 'wp_oxynate_is_donor' );
+defined( 'WP_OXYNATE_USER_META_LAST_DONATION_DATE' ) || define( 'WP_OXYNATE_USER_META_LAST_DONATION_DATE', 'wp_oxynate_last_donation_date' );
+defined( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER' ) || define( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER', 'wp_oxynate_is_public_contact_number' );
 
 // Post Meta Keys
 defined( 'WP_OXYNATE_POST_META_GENDER' ) || define( 'WP_OXYNATE_POST_META_GENDER', 'wp_oxynate_gender' );
