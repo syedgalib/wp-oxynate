@@ -706,12 +706,14 @@ class Users extends Rest_Base {
 
 		// Save blood group.
 		if ( isset( $request['blood_group'] ) && is_numeric( $request['blood_group'] ) ) {
-			update_user_meta( $id, WP_OXYNATE_USER_META_BLOOD_GROUP, wp_oxynate_clean( $request['blood_group'] ) );
+			$blood_group = ( ! empty( $request['blood_group'] ) && is_numeric( $request['blood_group'] ) ) ? wp_oxynate_clean( $request['blood_group'] ) : null;
+			update_user_meta( $id, WP_OXYNATE_USER_META_BLOOD_GROUP, $blood_group );
 		}
 
 		// Save hemoglobin.
 		if ( isset( $request['hemoglobin'] ) && is_numeric( $request['hemoglobin'] ) ) {
-			update_user_meta( $id, WP_OXYNATE_USER_META_HEMOGLOBIN, wp_oxynate_clean( $request['hemoglobin'] ) );
+			$hemoglobin = ( is_numeric( $request['hemoglobin'] ) ) ? wp_oxynate_clean( $request['hemoglobin'] ) : null;
+			update_user_meta( $id, WP_OXYNATE_USER_META_HEMOGLOBIN, $hemoglobin );
 		}
 
 		// Save phone number.
@@ -726,7 +728,8 @@ class Users extends Rest_Base {
 
 		// Save lcoation.
 		if ( isset( $request['location'] ) && is_numeric( $request['location'] ) ) {
-			update_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, wp_oxynate_clean( $request['location'] ) );
+			$location = ( ! empty( $request['location'] ) && is_numeric( $request['location'] ) ) ? wp_oxynate_clean( $request['location'] ) : null;
+			update_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, $location );
 		}
 
 		// Save address.
