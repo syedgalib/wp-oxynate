@@ -580,7 +580,9 @@ class Users extends Rest_Base {
 			'hemoglobin'               => get_user_meta( $id, WP_OXYNATE_USER_META_HEMOGLOBIN, true ),
 			'phone'                    => get_user_meta( $id, WP_OXYNATE_USER_META_PHONE, true ),
 			'last_donation_date'       => get_user_meta( $id, WP_OXYNATE_USER_META_LAST_DONATION_DATE, true ),
-			'location'                 => get_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, true ),
+			'location'                 => null,
+			'district'                 => null,
+			'area'                     => get_user_meta( $id, WP_OXYNATE_USER_META_LOCATION, true ),
 			'address'                  => get_user_meta( $id, WP_OXYNATE_USER_META_ADDRESS, true ),
 			'is_public_contact_number' => get_user_meta( $id, WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER, true ),
 			'is_donor'                 => get_user_meta( $id, WP_OXYNATE_USER_META_IS_DONOR, true ),
@@ -588,6 +590,31 @@ class Users extends Rest_Base {
 			'bookmarks'                => null,
 			'roles'                    => array_values( $user->roles ),
 		);
+
+		if ( ! empty( $data['area'] ) ) {
+			$data['district'] = wp_oxynate_get_term_top_ancestor( $data['area'], WP_OXYNATE_TERM_LOCATION, 'id' );
+			$data['location'] = $data['district'];
+		}
+
+		// User Avater.
+		$image_id = get_user_meta( $id, WP_OXYNATE_USER_META_AVATER, true );
+
+		if ( $image_id && ! empty( $attachment = get_post( $image_id ) ) ) {
+			$data['avater'] = array(
+				'id'                => (int) $image_id,
+				'date_created'      => $attachment->post_date,
+				'date_created_gmt'  => $attachment->post_date_gmt,
+				'date_modified'     => $attachment->post_modified,
+				'date_modified_gmt' => $attachment->post_modified_gmt,
+				'src'               => wp_get_attachment_url( $image_id ),
+			);
+		}
+
+		// User bookmarks
+		$bookmarks = wp_oxynate_get_user_bookmarks( $id );
+		if ( ! empty( $bookmarks ) ) {
+			$data['bookmarks'] = $bookmarks;
+		}
 
 		$string_data_types = [
 			'gender',
@@ -600,6 +627,8 @@ class Users extends Rest_Base {
 			'blood_group',
 			'hemoglobin',
 			'location',
+			'district',
+			'area',
 		];
 
 		$bool_data_types = [
@@ -627,26 +656,6 @@ class Users extends Rest_Base {
 
 			$data[ $key ] = $value;
 
-		}
-
-		// User Avater.
-		$image_id = get_user_meta( $id, WP_OXYNATE_USER_META_AVATER, true );
-
-		if ( $image_id && ! empty( $attachment = get_post( $image_id ) ) ) {
-			$data['avater'] = array(
-				'id'                => (int) $image_id,
-				'date_created'      => $attachment->post_date,
-				'date_created_gmt'  => $attachment->post_date_gmt,
-				'date_modified'     => $attachment->post_modified,
-				'date_modified_gmt' => $attachment->post_modified_gmt,
-				'src'               => wp_get_attachment_url( $image_id ),
-			);
-		}
-
-		// User bookmarks
-		$bookmarks = wp_oxynate_get_user_bookmarks( $id );
-		if ( ! empty( $bookmarks ) ) {
-			$data['bookmarks'] = $bookmarks;
 		}
 
 		$context  = ! empty( $request['context'] ) ? $request['context'] : 'view';
@@ -871,6 +880,16 @@ class Users extends Rest_Base {
 				'location' => array(
 					'description' => __( 'The user location.', 'wp_oxynate' ),
 					'type'        => 'integer',
+					'context'     => array( 'edit' ),
+				),
+				'district' => array(
+					'description' => __( 'The user district.', 'wp_oxynate' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+				),
+				'area' => array(
+					'description' => __( 'The user area.', 'wp_oxynate' ),
+					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'is_donor' => array(
@@ -983,8 +1002,8 @@ class Users extends Rest_Base {
 						),
 					),
 				),
-				'favorite' =>  array(
-					'description' => __( 'User favorite listing ids.', 'wp_oxynate' ),
+				'bookmarks' =>  array(
+					'description' => __( 'User bookmarked donation request ids.', 'wp_oxynate' ),
 					'type'        => 'array',
 					'items'       => array(
 						'type' => 'integer',

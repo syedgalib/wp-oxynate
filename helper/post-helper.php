@@ -313,3 +313,34 @@ function wp_oxynate_rest_get_term_data( $term ) {
 
 	return $term_data;
 }
+
+/**
+ * Get term top ancestor
+ * 
+ * @param int $term_id
+ * @param string $taxonomy
+ * @param string $return_type
+ * 
+ * @return mixed|null
+ */
+function wp_oxynate_get_term_top_ancestor( $term_id, $taxonomy, $return_type = 'object' ) {
+	$ancestors = get_term_parents_list( $term_id, $taxonomy, [
+		'format'    => 'slug',
+		'separator' => ',',
+		'link'      => false,
+	]);
+
+	$ancestors = ( ! empty( $ancestors ) ) ? explode( ',', rtrim( $ancestors, ',' ) ) : [];
+	$ancestor  = ( ! empty( $ancestors ) ) ? $ancestors[0] : '';
+	$ancestor  = ( ! empty( $ancestor ) ) ? get_term_by( 'slug', $ancestor, $taxonomy ) : '';
+
+	if ( empty( $ancestor ) ) {
+		return null;
+	}
+
+	if ( 'id' == $return_type ) {
+		return $ancestor->term_id;
+	}
+
+	return $ancestor;
+}
