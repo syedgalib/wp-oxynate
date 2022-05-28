@@ -98,6 +98,19 @@ class Users extends Rest_Base {
 			),
 			'schema' => array( $this, 'get_public_item_schema' ),
 		) );
+
+		register_rest_route( $this->namespace, '/' . $this->rest_base . '/total-donors', array(
+			'args' => array(),
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_total_donors' ),
+				'permission_callback' => array( $this, 'get_item_permissions_check' ),
+				'args'                => array(
+					'context' => $this->get_context_param( array( 'default' => 'view' ) ),
+				),
+			),
+			'schema' => array( $this, 'get_public_item_schema' ),
+		) );
 	}
 
 	/**
@@ -344,6 +357,42 @@ class Users extends Rest_Base {
 			$next_link = add_query_arg( 'page', $next_page, $base );
 			$response->link_header( 'next', $next_link );
 		}
+
+		return $response;
+	}
+
+	/**
+	 * Get total donors
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function get_total_donors( $request ) {
+		$prepared_args = [];
+
+		$prepared_arg['fields'] = 'ID';
+		$prepared_args['meta_query'] = [
+			[
+				'key'     => WP_OXYNATE_USER_META_IS_DONOR,
+				'value'   => true,
+				'compare' => '=',
+			]
+		];
+
+		/**
+		 * Filter arguments, before passing to WP_User_Query, when querying users via the REST API.
+		 *
+		 * @see https://developer.wordpress.org/reference/classes/wp_user_query/
+		 *
+		 * @param array           $prepared_args Array of arguments for WP_User_Query.
+		 * @param WP_REST_Request $request       The current request.
+		 */
+		$prepared_args = apply_filters( 'wp_oxynate_rest_total_donors_query', $prepared_args, $request );
+
+		$query = new WP_User_Query( $prepared_args );
+		$total_users = $query->get_total();
+
+		$response = rest_ensure_response( $total_users );
 
 		return $response;
 	}
