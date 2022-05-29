@@ -635,7 +635,7 @@ class Users extends Rest_Base {
 			'address'                  => get_user_meta( $id, WP_OXYNATE_USER_META_ADDRESS, true ),
 			'is_public_contact_number' => get_user_meta( $id, WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER, true ),
 			'is_donor'                 => get_user_meta( $id, WP_OXYNATE_USER_META_IS_DONOR, true ),
-			'avater'                   => null,
+			'avater'                   => wp_oxynate_get_user_avater( $id ),
 			'bookmarks'                => null,
 			'roles'                    => array_values( $user->roles ),
 		);
@@ -643,20 +643,6 @@ class Users extends Rest_Base {
 		if ( ! empty( $data['area'] ) ) {
 			$data['district'] = wp_oxynate_get_term_top_ancestor( $data['area'], WP_OXYNATE_TERM_LOCATION, 'id' );
 			$data['location'] = $data['district'];
-		}
-
-		// User Avater.
-		$image_id = get_user_meta( $id, WP_OXYNATE_USER_META_AVATER, true );
-
-		if ( $image_id && ! empty( $attachment = get_post( $image_id ) ) ) {
-			$data['avater'] = array(
-				'id'                => (int) $image_id,
-				'date_created'      => $attachment->post_date,
-				'date_created_gmt'  => $attachment->post_date_gmt,
-				'date_modified'     => $attachment->post_modified,
-				'date_modified_gmt' => $attachment->post_modified_gmt,
-				'src'               => wp_get_attachment_url( $image_id ),
-			);
 		}
 
 		// User bookmarks

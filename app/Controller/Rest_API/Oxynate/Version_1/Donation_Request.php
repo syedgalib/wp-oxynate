@@ -1296,7 +1296,24 @@ class Donation_Request extends Posts_Controller {
 					$base_data['menu_order'] = (int) $post->menu_order;
 					break;
 				case 'author':
-					$base_data['author'] = (int) $post->post_author;
+					$author = get_user_by( 'id', $post->post_author );
+					$author_info = [];
+
+					$author_info['id'] = (int) $post->post_author;
+
+					if ( empty( $author ) ||  is_wp_error( $author ) ) {
+						$base_data['author'] = $author_info;
+						break;
+					}
+
+					$full_name = $author->first_name .' '. $author->last_name;
+
+					$author_info['name']    = $full_name;
+					$author_info['email']   = $author->user_email;
+					$author_info['avaiter'] = wp_oxynate_get_user_avater( $author->id );
+
+					$base_data['author'] = $author_info;
+
 					break;
 			}
 		}

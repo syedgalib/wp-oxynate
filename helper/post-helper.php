@@ -344,3 +344,41 @@ function wp_oxynate_get_term_top_ancestor( $term_id, $taxonomy, $return_type = '
 
 	return $ancestor;
 }
+
+/**
+ * Get User Avater
+ * 
+ * @param int $id
+ * 
+ * @return array|null User Avater or null
+ */
+function wp_oxynate_get_user_avater( $id ) {
+
+	$image_id = get_user_meta( $id, WP_OXYNATE_USER_META_AVATER, true );
+
+	if ( ! $image_id ) {
+		return null;
+	}
+
+	if ( ! $image_id ) {
+		return null;
+	}
+
+	$attachment = get_post( $image_id );
+
+	if ( empty( $attachment ) ) {
+		return null;
+	}
+
+	$avater = [
+		'id'                => (int) $image_id,
+		'date_created'      => $attachment->post_date,
+		'date_created_gmt'  => $attachment->post_date_gmt,
+		'date_modified'     => $attachment->post_modified,
+		'date_modified_gmt' => $attachment->post_modified_gmt,
+		'src'               => wp_get_attachment_url( $image_id ),
+	];
+
+	return $avater;
+
+}
