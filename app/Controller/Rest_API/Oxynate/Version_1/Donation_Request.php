@@ -575,7 +575,7 @@ class Donation_Request extends Posts_Controller {
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'title' => array(
+				'name' => array(
 					'description' => __( 'Post title.', 'wp-oxynate' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
@@ -1229,8 +1229,8 @@ class Donation_Request extends Posts_Controller {
 				case 'id':
 					$base_data['id'] = $post->ID;
 					break;
-				case 'title':
-					$base_data['title'] = get_the_title( $post );
+				case 'name':
+					$base_data['name'] = get_the_title( $post );
 					break;
 				case 'slug':
 					$base_data['slug'] = $post->post_name;
@@ -1251,7 +1251,7 @@ class Donation_Request extends Posts_Controller {
 					$base_data['date_modified_gmt'] = $post->post_date_modified_gmt;
 					break;
 				case 'description':
-					$base_data['description'] = 'view' === $context ? wpautop( do_shortcode( $post->post_content ) ): $post->post_content;
+					$base_data['description'] = 'view' === $context ? wp_kses( do_shortcode( $post->post_content ), [] ): $post->post_content;
 					break;
 				case 'short_description':
 					$base_data['short_description'] = 'view' === $context ? $post->post_excerpt : $post->post_excerpt;
