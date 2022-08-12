@@ -37,6 +37,7 @@ defined( 'WP_OXYNATE_USER_META_ADDRESS' ) || define( 'WP_OXYNATE_USER_META_ADDRE
 defined( 'WP_OXYNATE_USER_META_IS_DONOR' ) || define( 'WP_OXYNATE_USER_META_IS_DONOR', 'wp_oxynate_is_donor' );
 defined( 'WP_OXYNATE_USER_META_LAST_DONATION_DATE' ) || define( 'WP_OXYNATE_USER_META_LAST_DONATION_DATE', 'wp_oxynate_last_donation_date' );
 defined( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER' ) || define( 'WP_OXYNATE_USER_META_IS_PUBLIC_CONTACT_NUMBER', 'wp_oxynate_is_public_contact_number' );
+defined( 'WP_OXYNATE_USER_META_BOOKMARKS' ) || define( 'WP_OXYNATE_USER_META_BOOKMARKS', 'wp_oxynate_bookmarks' );
 
 // Post Meta Keys
 defined( 'WP_OXYNATE_POST_META_GENDER' ) || define( 'WP_OXYNATE_POST_META_GENDER', 'wp_oxynate_gender' );

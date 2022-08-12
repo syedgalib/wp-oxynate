@@ -39,6 +39,7 @@ class Init {
         return [
             Authentication::class,
             Users::class,
+            Users_Bookmark::class,
             Donation_Request::class,
             Blood_Groups::class,
             Locations::class,

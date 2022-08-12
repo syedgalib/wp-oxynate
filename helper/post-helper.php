@@ -48,7 +48,7 @@ function wp_oxynate_get_object_terms( $object_id, $taxonomy, $field = null, $ind
  * @return array User Bookmarks
  */
 function wp_oxynate_get_user_bookmarks( $user_id ) {
-    $bookmarks = get_user_meta( $user_id, 'wp_oxynate_bookmarks', true );
+    $bookmarks = get_user_meta( $user_id, WP_OXYNATE_USER_META_BOOKMARKS, true );
 
 	if ( ! empty( $bookmarks ) && is_array( $bookmarks ) ) {
 		$bookmarks = wp_oxynate_prepare_user_bookmarks( $bookmarks );
@@ -65,6 +65,73 @@ function wp_oxynate_get_user_bookmarks( $user_id ) {
 	$bookmarks = apply_filters( 'wp_oxynate_user_bookmarks', $bookmarks, $user_id );
 
 	return $bookmarks;
+}
+
+/**
+ * This function update the user's bookmarks
+ *
+ * @param int $user_id The ID of the user whose bookmarks are being updated.
+ * @param int $donation_request_id The new bookmark donation request id.
+ *
+ * @return array
+ */
+function wp_oxynate_add_user_bookmarks( $user_id = 0, $donation_request_id = 0 ) {
+	if ( get_post_type( $donation_request_id ) !== WP_OXYNATE_POST_TYPE_DONATION_REQUEST ) {
+		return array();
+	}
+
+	$old_bookmarks = wp_oxynate_get_user_bookmarks( $user_id );
+	$new_bookmarks = array_merge( $old_bookmarks, array( $donation_request_id ) );
+	$new_bookmarks = wp_oxynate_prepare_user_bookmarks( $new_bookmarks );
+
+	update_user_meta( $user_id, WP_OXYNATE_USER_META_BOOKMARKS, $new_bookmarks );
+
+	$new_bookmarks = wp_oxynate_get_user_bookmarks( $user_id );
+
+	/**
+	 * Fire after user bookmarks updated.
+	 *
+	 * @param int $user_id
+	 * @param array $new_bookmarks
+	 * @param array $old_bookmarks
+	 */
+	do_action( 'wp_oxynate_user_bookmark_added', $user_id, $new_bookmarks, $old_bookmarks );
+
+	return $new_bookmarks;
+}
+
+/**
+ * This function deletes a donation request from a user's bookmarks
+ *
+ * @param int $user_id The ID of the user who's bookmarks are being updated.
+ * @param int $donation_request_id The donation request ID that is being deleted from the user's bookmarks.
+ *
+ * @return array An array of donation request IDs that are bookmarks for the user.
+ */
+function wp_oxynate_delete_user_bookmarks( $user_id = 0, $donation_request_id = 0 ) {
+	if ( get_post_type( $donation_request_id ) !== WP_OXYNATE_POST_TYPE_DONATION_REQUEST ) {
+		return array();
+	}
+
+	$old_bookmarks = wp_oxynate_get_user_bookmarks( $user_id );
+	$new_bookmarks = array_filter( $old_bookmarks, static function( $bookmark ) use ( $donation_request_id ) {
+		return ( $bookmark !== $donation_request_id );
+	} );
+
+	if ( count( $old_bookmarks ) > count( $new_bookmarks ) ) {
+		update_user_meta( $user_id, WP_OXYNATE_USER_META_BOOKMARKS, $new_bookmarks );
+	}
+
+	/**
+	 * Fire after user favorite listings updated.
+	 *
+	 * @param int $user_id
+	 * @param array $new_bookmarks
+	 * @param array $old_bookmarks
+	 */
+	do_action( 'wp_oxynate_user_bookmark_deleted', $user_id, $new_bookmarks, $old_bookmarks );
+
+	return $new_bookmarks;
 }
 
 /**

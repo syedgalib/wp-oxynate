@@ -158,9 +158,6 @@ class Users extends Rest_Base {
 	 * @return WP_Error|boolean
 	 */
 	public function get_item_permissions_check( $request ) {
-
-		return true;
-
 		$permissions = $this->check_permissions( $request, 'read' );
 		if ( is_wp_error( $permissions ) ) {
 			return $permissions;
