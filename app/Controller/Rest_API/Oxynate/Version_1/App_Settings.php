@@ -197,7 +197,7 @@ class App_Settings extends Rest_Base {
 
 		$permission = current_user_can( $contexts[ $context ], $object_id );
 
-		return apply_filters( 'wp_oxinate_rest_check_permissions', $permission, $context, $object_id, 'user' );
+		return apply_filters( 'wp_oxynate_rest_check_permissions', $permission, $context, $object_id, 'user' );
 	}
 
 	/**

@@ -361,6 +361,26 @@ msgstr ""
 msgid "Limit result set to posts specific to author ID."
 msgstr ""
 
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:34, ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:51
+msgid "Donation request ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:47
+msgid "User id."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:161, ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:208
+msgid "Invalid user ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:168, ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:215
+msgid "Invalid donation request id ID."
+msgstr ""
+
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:280
+msgid "User favorite listing id."
+msgstr ""
+
 #: ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Posts_Controller.php:19, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:121
 msgid "Sorry, you cannot list resources."
 msgstr ""
@@ -438,22 +458,22 @@ msgid "Cheatin&#8217; huh?"
 msgstr ""
 
 #. translators: %s: image URL
-#: ../helper/post-helper.php:113
+#: ../helper/post-helper.php:180
 msgid "Invalid URL %s."
 msgstr ""
 
 #. translators: %s: image URL
-#: ../helper/post-helper.php:135
+#: ../helper/post-helper.php:202
 msgid "Error getting remote image %s."
 msgstr ""
 
 #. translators: %s: error message
-#: ../helper/post-helper.php:137
+#: ../helper/post-helper.php:204
 msgid "Error: %s"
 msgstr ""
 
 #. translators: %s: error message
-#: ../helper/post-helper.php:156
+#: ../helper/post-helper.php:223
 msgid "Invalid image: %s"
 msgstr ""
 

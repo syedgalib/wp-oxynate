@@ -11,7 +11,7 @@ class Permissions {
      */
     public function __construct() {
 
-        add_filter( 'wp_oxinate_rest_check_permissions', [ $this, 'allow_read_context_permission' ], 20, 4 );
+        add_filter( 'wp_oxynate_rest_check_permissions', [ $this, 'allow_read_context_permission' ], 20, 4 );
 
     }
 
