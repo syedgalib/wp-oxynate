@@ -117,33 +117,31 @@ class Users_Bookmark extends Rest_Base {
 				return new WP_Error( 'wp_oxynate_rest_user_invalid', __( 'Resource does not exist.', 'wp_oxynate' ), array( 'status' => 404 ) );
 			}
 
-			return $this->rest_check_user_permissions( $context, $user->ID );
+			return $this->rest_check_user_favorite_permissions( $context, $user->ID );
 		}
 
-		return $this->rest_check_user_permissions( $context );
+		return $this->rest_check_user_favorite_permissions( $context );
 	}
 
 	/**
-	 * Check permissions of users on REST API.
-	 *
-	 * Copied from wc_rest_check_user_permissions
+	 * Check permissions of users favorite on REST API.
 	 *
 	 * @param string $context   Request context.
 	 * @param int    $object_id Post ID.
 	 * @return bool
 	 */
-	protected function rest_check_user_permissions( $context = 'read', $object_id = 0 ) {
+	function rest_check_user_favorite_permissions( $context = 'read', $object_id = 0 ) {
 		$contexts = array(
-			'read'   => 'edit_user',
-			'create' => 'promote_users',
-			'edit'   => 'edit_user',
-			'delete' => 'delete_users',
-			'batch'  => 'promote_users',
+			'read'   => 'read',
+			'create' => 'read',
+			'edit'   => 'read',
+			'delete' => 'read',
+			'batch'  => 'read',
 		);
 
 		$permission = current_user_can( $contexts[ $context ], $object_id );
 
-		return apply_filters( 'wp_oxynate_rest_check_permissions', $permission, $context, $object_id, 'user' );
+		return apply_filters( 'wp_oxynate_rest_check_permissions', $permission, $context, $object_id, 'user_favorite' );
 	}
 
 	/**
