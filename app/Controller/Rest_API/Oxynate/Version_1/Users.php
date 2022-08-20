@@ -642,6 +642,26 @@ class Users extends Rest_Base {
 			$data['location'] = $data['district'];
 		}
 
+		if ( ! empty( $data['area'] ) ) {
+			$term = get_term( (int) $data['area'], WP_OXYNATE_TERM_LOCATION );
+			$data['area'] = wp_oxynate_prepare_rest_term_data( $term );
+		}
+
+		if ( ! empty( $data['district'] ) ) {
+			$term = get_term( (int) $data['district'], WP_OXYNATE_TERM_LOCATION );
+			$data['district'] = wp_oxynate_prepare_rest_term_data( $term );
+		}
+
+		if ( ! empty( $data['location'] ) ) {
+			$term = get_term( (int) $data['location'], WP_OXYNATE_TERM_LOCATION );
+			$data['location'] = wp_oxynate_prepare_rest_term_data( $term );
+		}
+
+		if ( ! empty( $data['blood_group'] ) ) {
+			$term = get_term( (int) $data['blood_group'], WP_OXYNATE_TERM_BLOOD_GROUP );
+			$data['blood_group'] = wp_oxynate_prepare_rest_term_data( $term );
+		}
+
 		// User bookmarks
 		$bookmarks = wp_oxynate_get_user_bookmarks( $id );
 		if ( ! empty( $bookmarks ) ) {
@@ -656,11 +676,7 @@ class Users extends Rest_Base {
 		];
 
 		$int_data_types = [
-			'blood_group',
 			'hemoglobin',
-			'location',
-			'district',
-			'area',
 		];
 
 		$bool_data_types = [
@@ -919,12 +935,12 @@ class Users extends Rest_Base {
 				),
 				'district' => array(
 					'description' => __( 'The user district.', 'wp_oxynate' ),
-					'type'        => 'integer',
+					'type'        => 'object',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'area' => array(
 					'description' => __( 'The user area.', 'wp_oxynate' ),
-					'type'        => 'integer',
+					'type'        => 'object',
 					'context'     => array( 'view', 'edit' ),
 				),
 				'is_donor' => array(

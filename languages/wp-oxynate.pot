@@ -369,15 +369,15 @@ msgstr ""
 msgid "User id."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:161, ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:208
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:159, ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:206
 msgid "Invalid user ID."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:168, ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:215
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:166, ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:213
 msgid "Invalid donation request id ID."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:280
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Users_Bookmark.php:278
 msgid "User favorite listing id."
 msgstr ""
 

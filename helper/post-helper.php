@@ -449,3 +449,27 @@ function wp_oxynate_get_user_avater( $id ) {
 	return $avater;
 
 }
+
+
+/**
+ * Prepare REST Term Data
+ * 
+ * @param Object $term
+ * 
+ * @return array|null Term Data or null
+ */
+function wp_oxynate_prepare_rest_term_data( $term ) {
+
+	if ( empty( $term ) ) {
+		return null;
+	}
+
+	return array(
+		'id'          => (int) $term->term_id,
+		'name'        => $term->name,
+		'slug'        => $term->slug,
+		'parent'      => (int) $term->parent,
+		'description' => $term->description,
+		'count'       => (int) $term->count,
+	);
+}
