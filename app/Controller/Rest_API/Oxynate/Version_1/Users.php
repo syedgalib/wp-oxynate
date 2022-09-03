@@ -287,15 +287,122 @@ class Users extends Rest_Base {
 			$prepared_args['search_columns'] = array( 'user_email' );
 		}
 
-		// Filter by email.
-		if ( ! empty( $request['is_donor'] ) ) {
-			$prepared_args['meta_query'] = [
-				[
-					'key'     => WP_OXYNATE_USER_META_IS_DONOR,
-					'value'   => $request['is_donor'],
-					'compare' => '=',
-				]
+		$prepared_args['meta_query'] = [
+			'relation' => 'AND',
+		];
+
+		// Filter by name.
+		if ( ! empty( $request['name'] ) ) {
+			$name_parts = explode( ' ', trim( $request['name'] ) );
+			$name_query = [ 'relation' => 'OR' ];
+
+			foreach( $name_parts as $name ) {
+				$name_query[] = [
+					'key'     => 'display_name',
+					'value'   => $name,
+					'compare' => 'LIKE',
+				];
+				$name_query[] = [
+					'key'     => 'first_name',
+					'value'   => $name,
+					'compare' => 'LIKE',
+				];
+				$name_query[] = [
+					'key'     => 'last_name',
+					'value'   => $name,
+					'compare' => 'LIKE',
+				];
+			}
+
+			$prepared_args['meta_query'][] = $name_query;
+		}
+
+		// Filter by donor.
+		if ( isset( $request['is_donor'] ) ) {
+			$donor_query = [
+				'relation' => 'OR',
 			];
+
+			if ( oxynate_is_truthy( $request['is_donor'] ) ) {
+				$donor_query[] = [
+					'key'     => WP_OXYNATE_USER_META_IS_DONOR,
+					'value'   => 1,
+					'compare' => '=',
+				];
+			} else {
+				$donor_query[] = [
+					'key'     => WP_OXYNATE_USER_META_IS_DONOR,
+					'compare' => 'NOT EXISTS',
+				];
+				$donor_query[] = [
+					'key'     => WP_OXYNATE_USER_META_IS_DONOR,
+					'value'   => 0,
+					'compare' => '=',
+				];
+			}
+
+			$prepared_args['meta_query'][] = $donor_query;
+		}
+
+		// Filter by gender.
+		if ( isset( $request['gender'] ) ) {
+			$prepared_args['meta_query'][] = [
+				'key'     => WP_OXYNATE_USER_META_GENDER,
+				'value'   => $request['gender'],
+				'compare' => '=',
+			];
+		}
+
+		// Filter by gender.
+		if ( isset( $request['blood_group'] ) ) {
+			$prepared_args['meta_query'][] = [
+				'key'     => WP_OXYNATE_USER_META_BLOOD_GROUP,
+				'value'   => $request['blood_group'],
+				'compare' => '=',
+			];
+		}
+
+		if ( isset( $request['hemoglobin'] ) ) {
+			$supported_comare = [ '=', '!=', '<', '>', '>=', '<=' ];
+			$conmare          = ( isset( $request['hemoglobin_compare'] ) && in_array( $request['hemoglobin_compare'], $supported_comare ) ) ? $request['hemoglobin_compare'] : '=';
+
+			$prepared_args['meta_query'][] = [
+				'key'     => WP_OXYNATE_USER_META_HEMOGLOBIN,
+				'value'   => $request['hemoglobin'],
+				'compare' => $conmare,
+			];
+		}
+
+		if ( isset( $request['location'] ) ) {
+			$location = get_term( (int) $request['location'], WP_OXYNATE_TERM_LOCATION );
+			
+			if ( $location ) {
+				if ( empty( $location->parent ) ) {
+					$location_ids = [ $location->term_id ];
+					$locations    = get_terms( WP_OXYNATE_TERM_LOCATION, [
+						'hide_empty' => false,
+						'parent'     => $location->term_id,
+					]);
+
+					if ( ! empty( $locations ) ) {
+						foreach( $locations as $location ) {
+							$location_ids[] = $location->term_id;
+						}
+					}
+
+					$prepared_args['meta_query'][] = [
+						'key'     => WP_OXYNATE_USER_META_LOCATION,
+						'value'   => $location_ids,
+						'compare' => 'in',
+					];
+				} else {
+					$prepared_args['meta_query'][] = [
+						'key'     => WP_OXYNATE_USER_META_LOCATION,
+						'value'   => $request['location'],
+						'compare' => '=',
+					];
+				}
+			}
 		}
 
 		// Filter by role.
