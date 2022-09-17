@@ -2,7 +2,7 @@
 
 namespace Oxynate\Controller\CPT;
 
-class On_Boarding_Pages {
+class Admin_Page {
 
     /**
 	 * Constuctor
@@ -19,9 +19,9 @@ class On_Boarding_Pages {
      * @return void
 	 */
     public function register_post_type() {
-
-        $singular = __( 'On Boarding Page', 'wp-oxynate' );
-        $plural   = __( 'On Boarding Pages', 'wp-oxynate' );
+        
+        $singular = __( 'Admin Page', 'wp-oxynate' );
+        $plural   = __( 'Admin Pages', 'wp-oxynate' );
         $args     = [ 'all_items' => $plural ];
 
         $args = [
@@ -37,7 +37,7 @@ class On_Boarding_Pages {
             ],
         ];
 
-        register_post_type( WP_OXYNATE_POST_TYPE_ON_BOARDING_PAGES, $args );
+        register_post_type( WP_OXYNATE_POST_TYPE_ADMIN_PAGE, $args );
 
     }
 }

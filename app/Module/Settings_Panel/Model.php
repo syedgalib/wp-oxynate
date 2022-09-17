@@ -2,6 +2,7 @@
 
 namespace Oxynate\Module\Settings_Panel;
 
+use Oxynate\Model\Admin_Page;
 use Oxynate\Model\On_Boarding_Pages;
 
 class Model {
@@ -189,6 +190,7 @@ class Model {
         $options = ( is_array( $options ) ) ? $options : [];
 
         $options['on_boarding_pages'] = On_Boarding_Pages::get_rest_posts();
+        $options['admin_pages']       = Admin_Page::get_rest_posts();
 
         return $options;
     }
@@ -203,13 +205,25 @@ class Model {
         $option_fields = self::get_option_fields();
         $option_fields = ( is_array( $option_fields ) ) ? $option_fields : [];
 
+        $private_options = [
+            'twilio_sid',
+            'twilio_token',
+            'twilio_from_phone',
+        ];
+
         $settings = [];
 
         foreach ( $option_fields as $_key => $_args ) {
+
+            if ( in_array( $_key, $private_options ) ) {
+                continue;
+            }
+
             $settings[ $_key ] = ( isset( $_args['value'] ) ) ? $_args['value'] : null;
         }
 
         $settings['on_boarding_pages'] = On_Boarding_Pages::get_rest_posts();
+        $settings['admin_pages']       = Admin_Page::get_rest_posts();
 
         return $settings;
     }

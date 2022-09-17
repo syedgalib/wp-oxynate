@@ -520,7 +520,7 @@ class Users extends Rest_Base {
 		$user_data = array(
 			'user_email' => $request['email'],
 			'user_pass'  => $request['password'],
-			'role'       => 'subscriber',
+			'role'       => 'author',
 		);
 
 		if ( isset( $request['username'] ) ) {

@@ -21,6 +21,7 @@ defined( 'WP_OXYNATE_CSS_PATH' ) || define( 'WP_OXYNATE_CSS_PATH',  WP_OXYNATE_A
 // Post Types
 defined( 'WP_OXYNATE_POST_TYPE_DONATION_REQUEST' ) || define( 'WP_OXYNATE_POST_TYPE_DONATION_REQUEST', 'donation-request' );
 defined( 'WP_OXYNATE_POST_TYPE_ON_BOARDING_PAGES' ) || define( 'WP_OXYNATE_POST_TYPE_ON_BOARDING_PAGES', 'on-boarding-pages' );
+defined( 'WP_OXYNATE_POST_TYPE_ADMIN_PAGE' ) || define( 'WP_OXYNATE_POST_TYPE_ADMIN_PAGE', 'oxynate-admin-page' );
 
 // Taxonomy
 defined( 'WP_OXYNATE_TERM_LOCATION' ) || define( 'WP_OXYNATE_TERM_LOCATION', 'wp-oxynate-location' );

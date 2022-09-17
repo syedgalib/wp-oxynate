@@ -4,7 +4,7 @@ namespace Oxynate\Model;
 
 use WP_Query;
 
-class On_Boarding_Pages {
+class Admin_Page {
 
     /**
      * Get Posts for Rest API
@@ -15,7 +15,7 @@ class On_Boarding_Pages {
     public static function get_rest_posts( $args = [] ) {
 
         $default = [
-            'post_type'      => WP_OXYNATE_POST_TYPE_ON_BOARDING_PAGES,
+            'post_type'      => WP_OXYNATE_POST_TYPE_ADMIN_PAGE,
             'posts_per_page' => -1,
             'page'           => 1,
             'meta_key'       => 'order',
@@ -45,9 +45,6 @@ class On_Boarding_Pages {
             $order = get_post_meta( get_the_ID(), 'order', 1 );
             $order = is_numeric( $order ) ? (int) $order : 1;
             $post_item['order'] = $order;
-
-            $post_item['text_color']       = get_post_meta( get_the_ID(), 'text_color', '#FFFFFF' );
-            $post_item['background_color'] = get_post_meta( get_the_ID(), 'background_color', '#F01D3A' );
 
             $posts[] = $post_item;
 

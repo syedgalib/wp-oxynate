@@ -271,14 +271,14 @@ class Donation_Request extends Posts_Controller {
 		// Save Location
 		if ( isset( $args['location'] ) && ! empty( $args['location']['id'] ) ) {
 
-			wp_set_object_terms( $post_id, $args['location']['id'], WP_OXYNATE_TERM_LOCATION );
+			wp_set_object_terms( $post_id, (int) $args['location']['id'], WP_OXYNATE_TERM_LOCATION );
 
 		}
 
 		// Save Blood Group
 		if ( isset( $args['blood_group'] ) && ! empty( $args['blood_group']['id'] ) ) {
 
-			wp_set_object_terms( $post_id, $args['blood_group']['id'], WP_OXYNATE_TERM_BLOOD_GROUP );
+			wp_set_object_terms( $post_id, (int) $args['blood_group']['id'], WP_OXYNATE_TERM_BLOOD_GROUP );
 
 		}
 
@@ -473,7 +473,6 @@ class Donation_Request extends Posts_Controller {
 		if ( isset( $request['id'] ) ) {
 			$args['ID'] = sanitize_text_field( $request['id'] );
 		}
-
 		// Post Author
 		if ( isset( $request['author'] ) ) {
 			$args['post_author'] = sanitize_text_field( $request['author'] );
@@ -482,6 +481,10 @@ class Donation_Request extends Posts_Controller {
 		// Post Title
 		if ( isset( $request['title'] ) ) {
 			$args['post_title'] = sanitize_text_field( $request['title'] );
+		}
+
+		if ( isset( $request['name'] ) ) {
+			$args['post_title'] = sanitize_text_field( $request['name'] );
 		}
 
 		// Post Content
@@ -495,6 +498,8 @@ class Donation_Request extends Posts_Controller {
 		}
 
 		// Post Status
+		$args['post_status'] = 'publish';
+
 		if ( isset( $request['status'] ) ) {
 			$requested_post_status   = sanitize_text_field( $request['status'] );
 			$supportated_post_status = array_keys( get_post_statuses() );

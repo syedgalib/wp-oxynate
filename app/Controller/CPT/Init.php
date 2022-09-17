@@ -27,6 +27,7 @@ class Init {
 	protected function get_controllers() {
         return [
             Donation_Request::class,
+            Admin_Page::class,
             On_Boarding_Pages::class,
         ];
     }
