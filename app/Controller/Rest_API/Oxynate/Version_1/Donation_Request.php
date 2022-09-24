@@ -283,10 +283,12 @@ class Donation_Request extends Posts_Controller {
 		}
 
 		// Save Images
+		if ( isset( $args['images'] ) && empty( $args['images'] ) ) {
+			$args['images'] = [];
+		}
+
 		if ( isset( $args['images'] ) ) {
-
 			$this->set_post_images( $post_id, $args['images'] );
-
 		}
 
 		// Update Preset Fields
@@ -1064,12 +1066,6 @@ class Donation_Request extends Posts_Controller {
 			case 'include':
 				$args['orderby'] = 'post__in';
 				break;
-
-			// case 'title':
-			// 	break;
-
-			// case 'date':
-			// 	break;
 		}
 
 		// Radius query.

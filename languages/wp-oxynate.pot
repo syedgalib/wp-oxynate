@@ -13,6 +13,14 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../app/Controller/CPT/Admin_Page.php:23
+msgid "Admin Page"
+msgstr ""
+
+#: ../app/Controller/CPT/Admin_Page.php:24
+msgid "Admin Pages"
+msgstr ""
+
 #: ../app/Controller/CPT/Donation_Request.php:23
 msgid "Oxynate"
 msgstr ""
@@ -33,7 +41,7 @@ msgstr ""
 msgid "On Boarding Pages"
 msgstr ""
 
-#: ../app/Controller/Taxonomy/Blood_Group.php:23, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:749
+#: ../app/Controller/Taxonomy/Blood_Group.php:23, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:754
 msgid "Blood Group"
 msgstr ""
 
@@ -49,39 +57,39 @@ msgstr ""
 msgid "Locations"
 msgstr ""
 
-#: ../app/Module/Settings_Panel/Model.php:22
+#: ../app/Module/Settings_Panel/Model.php:23
 msgid "App Name"
 msgstr ""
 
-#: ../app/Module/Settings_Panel/Model.php:28
+#: ../app/Module/Settings_Panel/Model.php:29
 msgid "Admin Phone"
 msgstr ""
 
-#: ../app/Module/Settings_Panel/Model.php:34
+#: ../app/Module/Settings_Panel/Model.php:35
 msgid "Twilio : SID"
 msgstr ""
 
-#: ../app/Module/Settings_Panel/Model.php:40
+#: ../app/Module/Settings_Panel/Model.php:41
 msgid "Twilio : Token"
 msgstr ""
 
-#: ../app/Module/Settings_Panel/Model.php:46
+#: ../app/Module/Settings_Panel/Model.php:47
 msgid "Twilio : From Phone"
 msgstr ""
 
-#: ../app/Module/Settings_Panel/Model.php:81
+#: ../app/Module/Settings_Panel/Model.php:82
 msgid "Nothing to update"
 msgstr ""
 
-#: ../app/Module/Settings_Panel/Model.php:93
+#: ../app/Module/Settings_Panel/Model.php:94
 msgid "The settings has been updated successfuly"
 msgstr ""
 
-#: ../app/Module/Settings_Panel/Model.php:114
+#: ../app/Module/Settings_Panel/Model.php:115
 msgid "Nothing to delete"
 msgstr ""
 
-#: ../app/Module/Settings_Panel/Model.php:127
+#: ../app/Module/Settings_Panel/Model.php:128
 msgid "The settings has been deleted successfuly"
 msgstr ""
 
@@ -109,7 +117,7 @@ msgstr ""
 msgid "The OTP is not valid"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Blood_Groups.php:73, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:63, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:573, ../app/Controller/Rest_API/Oxynate/Version_1/Locations.php:73, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:70
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Blood_Groups.php:73, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:63, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:578, ../app/Controller/Rest_API/Oxynate/Version_1/Locations.php:73, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:70
 msgid "Unique identifier for the resource."
 msgstr ""
 
@@ -145,219 +153,219 @@ msgstr ""
 msgid "Please provide required fields to save the post."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:579
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:584
 msgid "Post title."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:585
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:590
 msgid "Post slug."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:590
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:595
 msgid "Post URL."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:597
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:602
 msgid "The date the post was created, in the site's timezone."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:603
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:608
 msgid "The date the post was created, as GMT."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:609
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:614
 msgid "The date the post was last modified, in the site's timezone."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:615
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:620
 msgid "The date the post was last modified, as GMT."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:621
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:626
 msgid "Post description."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:626
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:631
 msgid "Post short description."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:631
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:636
 msgid "Post status."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:636
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:641
 msgid "Gender."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:641
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:646
 msgid "Hemoglobin."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:646
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:651
 msgid "Phone number."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:651
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:656
 msgid "Listing address."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:656
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:661
 msgid "Address location latitude."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:661
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:666
 msgid "Address location longitude."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:666
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:671
 msgid "Location of the post."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:673, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:756
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:678, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:761
 msgid "Location ID."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:678, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:761
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:683, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:766
 msgid "Location name."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:684, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:767
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:689, ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:772
 msgid "Location slug."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:693
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:698
 msgid "District of the post."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:701
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:706
 msgid "District ID."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:706
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:711
 msgid "District name."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:712
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:717
 msgid "District slug."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:721
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:726
 msgid "Area of the post."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:729
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:734
 msgid "Area ID."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:734
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:739
 msgid "Area name."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:740
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:745
 msgid "Area slug."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:776
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:781
 msgid "List of images."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:783
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:788
 msgid "Image ID."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:788
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:793
 msgid "The date the image was created, in the site's timezone."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:794
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:799
 msgid "The date the image was created, as GMT."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:800
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:805
 msgid "The date the image was last modified, in the site's timezone."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:806
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:811
 msgid "The date the image was last modified, as GMT."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:812
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:817
 msgid "Image URL."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:818
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:823
 msgid "Image name."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:823
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:828
 msgid "Image alternative text."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:828
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:833
 msgid "Image position. 0 means that the image is featured."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:836
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:841
 msgid "Menu order, used to custom sort listings."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:841
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:846
 msgid "Listing author id."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:846
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:851
 msgid "Meta data."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:853
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:858
 msgid "Meta ID."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:859
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:864
 msgid "Meta key."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:864
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:869
 msgid "Meta value."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:888, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:682
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:893, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:682
 msgid "Ensure result set excludes specific IDs."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:894
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:899
 msgid "Limit result set to specific IDs."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:900
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:905
 msgid "Offset the result set by a specific number of items."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:907, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:706
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:912, ../app/Controller/Rest_API/Oxynate/Version_1/Helper/Terms_Controller.php:706
 msgid "Order sort attribute ascending or descending."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:914
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:919
 msgid "Sort collection by object attribute."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:921
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:926
 msgid "Limit result set to posts with a specific slug."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:927
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:932
 msgid "Limit result set to posts assigned a specific status."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:934
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:939
 msgid "Limit result set to posts assigned a specific location ID."
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:940
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:945
 msgid "Limit result set to posts assigned a specific blood group"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:946
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Donation_Request.php:951
 msgid "Limit result set to posts specific to author ID."
 msgstr ""
 
