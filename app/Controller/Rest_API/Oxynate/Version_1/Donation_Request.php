@@ -1309,9 +1309,9 @@ class Donation_Request extends Posts_Controller {
 
 					$full_name = $author->first_name .' '. $author->last_name;
 
-					$author_info['name']    = $full_name;
-					$author_info['email']   = $author->user_email;
-					$author_info['avaiter'] = wp_oxynate_get_user_avater( $author->id );
+					$author_info['name']   = $full_name;
+					$author_info['email']  = $author->user_email;
+					$author_info['avater'] = wp_oxynate_get_user_avater( $author->id );
 
 					$base_data['author'] = $author_info;
 
