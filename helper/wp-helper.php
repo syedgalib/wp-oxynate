@@ -51,7 +51,7 @@ function wp_oxynate_ensure_valid_role( $role = '' ) {
     $available_roles = wp_roles();
     $available_roles = ( ! empty( $available_roles ) ) ? array_keys( $available_roles->role_names ) : [];
 
-    $role = ( in_array( $role, $available_roles ) ) ? $role : 'subscriber';
+    $role = ( in_array( $role, $available_roles ) ) ? $role : 'author';
 
     return $role;
 }
@@ -70,8 +70,20 @@ function wp_oxynate_get_or_create_user_by_email( $email = '', $user_meta = [] ) 
         $username = preg_replace( '/@.+$/', '', $email );
         $username = wp_oxynate_generate_unique_username( $username );
         $password = wp_generate_password();
-        $user_id  = wp_create_user( $username, $password, $email );
-        
+
+        $user_data = [
+            'user_email' => $email,
+            'user_pass'  => $password,
+            'user_login' => $username,
+            'role'       => 'author',
+        ];
+
+        $user_id = wp_insert_user( $user_data );
+
+        if ( is_wp_error( $user_id ) ) {
+            return $user_id;
+        }
+
         // Update User Meta
         if ( ! empty( $user_meta ) ) {
             foreach( $user_meta as $meta_key => $meta_value ) {
@@ -102,7 +114,18 @@ function wp_oxynate_get_or_create_user_by_phone( $phone = '', $user_meta = [] ) 
     if ( empty( $user ) ) {
         $username = $phone;
         $password = wp_generate_password();
-        $user_id  = wp_create_user( $username, $password );
+
+        $user_data = [
+            'user_pass'  => $password,
+            'user_login' => $username,
+            'role'       => 'author',
+        ];
+
+        $user_id = wp_insert_user( $user_data );
+
+        if ( is_wp_error( $user_id ) ) {
+            return $user_id;
+        }
         
         // Update User Meta
         if ( ! empty( $user_meta ) ) {
