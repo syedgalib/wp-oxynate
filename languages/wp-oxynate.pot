@@ -66,15 +66,7 @@ msgid "Admin Phone"
 msgstr ""
 
 #: ../app/Module/Settings_Panel/Model.php:35
-msgid "Twilio : SID"
-msgstr ""
-
-#: ../app/Module/Settings_Panel/Model.php:41
-msgid "Twilio : Token"
-msgstr ""
-
-#: ../app/Module/Settings_Panel/Model.php:47
-msgid "Twilio : From Phone"
+msgid "SMS Gatway Token"
 msgstr ""
 
 #: ../app/Module/Settings_Panel/Model.php:82
@@ -93,27 +85,27 @@ msgstr ""
 msgid "The settings has been deleted successfuly"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:179, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:393
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:180, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:447
 msgid "Couldn't authenticate the user"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:282, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:435
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:283, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:489
 msgid "Something went wrong"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:303, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:446
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:304, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:500
 msgid "Email is required"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:326, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:374
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:338, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:380, ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:428
 msgid "Phone number is required"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:378
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:432
 msgid "The OTP is required"
 msgstr ""
 
-#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:385
+#: ../app/Controller/Rest_API/Oxynate/Version_1/Authentication.php:439
 msgid "The OTP is not valid"
 msgstr ""
 
@@ -461,7 +453,7 @@ msgstr ""
 msgid "Limit result set to resources with a specific slug."
 msgstr ""
 
-#: ../app.php:34, ../app.php:39
+#: ../app.php:42, ../app.php:47
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
