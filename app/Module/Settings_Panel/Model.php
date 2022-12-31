@@ -21,31 +21,19 @@ class Model {
         $option_fields['app_name'] = [
             'type'  => 'text',
             'label' => __( 'App Name', 'wp-oxynate' ),
-            'value' => self::get_option_value( 'app_name', '' ),
+            'value' => self::get_option( 'app_name', '' ),
         ];
 
         $option_fields['admin_phone'] = [
             'type'  => 'tel',
             'label' => __( 'Admin Phone', 'wp-oxynate' ),
-            'value' => self::get_option_value( 'admin_phone', '' ),
+            'value' => self::get_option( 'admin_phone', '' ),
         ];
 
-        $option_fields['twilio_sid'] = [
+        $option_fields['gwsg_token'] = [
             'type'  => 'text',
-            'label' => __( 'Twilio : SID', 'wp-oxynate' ),
-            'value' => self::get_option_value( 'twilio_sid', '' ),
-        ];
-
-        $option_fields['twilio_token'] = [
-            'type'  => 'text',
-            'label' => __( 'Twilio : Token', 'wp-oxynate' ),
-            'value' => self::get_option_value( 'twilio_token', '' ),
-        ];
-
-        $option_fields['twilio_from_phone'] = [
-            'type'  => 'text',
-            'label' => __( 'Twilio : From Phone', 'wp-oxynate' ),
-            'value' => self::get_option_value( 'twilio_from_phone', '' ),
+            'label' => __( 'SMS Gatway Token', 'wp-oxynate' ),
+            'value' => self::get_option( 'gwsg_token', '' ),
         ];
 
         return $option_fields;
@@ -58,12 +46,24 @@ class Model {
      * @param mixed $default Default Value
      * @return mixed
      */
-    public static function get_option_value( $key = '', $default = '' ) {
+    public static function get_option( $key = '', $default = '' ) {
         
         $options = self::get_options();
         $value = ( key_exists( $key, $options ) ) ? $options[ $key ] : $default;
         
         return $value;
+    }
+
+    /**
+     * Get Option Value
+     * 
+     * @param string $key Option Key
+     * @param mixed $default Default Value
+     * @return mixed
+     * @deprecated
+     */
+    public static function get_option_value( $key = '', $default = '' ) {
+        return get_option( $key, $default );
     }
 
     /**
@@ -206,9 +206,7 @@ class Model {
         $option_fields = ( is_array( $option_fields ) ) ? $option_fields : [];
 
         $private_options = [
-            'twilio_sid',
-            'twilio_token',
-            'twilio_from_phone',
+            'gwsg_token',
         ];
 
         $settings = [];

@@ -2,12 +2,16 @@
 
 use Oxynate\Controller;
 use Oxynate\Helper;
+use Oxynate\Service\Init as Services;
 
 final class Oxynate {
 
     private static $instance;
 
     private function __construct() {
+
+        // Register Services
+        add_action( 'init', [ $this, 'register_services' ] );
 
         // Register Controllers
         $controllers = $this->get_controllers();
@@ -27,6 +31,10 @@ final class Oxynate {
         return [
             Controller\Init::class,
         ];
+    }
+
+    public function register_services() {
+        $GLOBALS['oxynate_service'] = new Services();
     }
 
     public function __clone() {

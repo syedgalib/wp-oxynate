@@ -10,6 +10,7 @@ use Twilio\Rest\Client as TwilioClient;
 
 use Oxynate\Controller\Rest_API\Oxynate\Version_1\Helper\Rest_Base;
 use Oxynate\Module\Settings_Panel\Model as App_Settings;
+use Oxynate\Service\Init as Oxynate_Service;
 
 class Authentication extends Rest_Base {
 
@@ -319,6 +320,59 @@ class Authentication extends Rest_Base {
 	 * @return array|WP_Error
 	 */
 	public function send_otp( $request ) {
+		/**
+		 * Oxynate Service
+		 * 
+		 * @var Oxynate_Service
+		 */
+		global $oxynate_service;
+
+		/**
+		 * Phone
+		 * 
+		 * @var string
+		 */
+		$phone = $request->get_param('phone');
+
+		if ( empty( $phone ) ) {
+			return new WP_Error( 403, __( 'Phone number is required', 'wp-oxynate' ) );
+		}
+
+		$app_name = App_Settings::get_option( 'app_name' );
+		$otp      = random_int( 1000, 9999 );
+
+		$to      = substr( $phone, 2 );
+		$message = "$app_name\n\n";
+		$message .= "Your OTP code is {$otp}";
+
+		$status = $oxynate_service->sms_getway->send( $to, $message );
+
+		if ( ! $status['success'] ) {
+			$message = __( 'Could not send the OTP, please try again later', 'oxynate' );
+
+			return new WP_Error( 403, $message );
+		}
+
+		// Save The OTP Code
+		$transient_key      = "wp_oxynate_otp_{$phone}";
+		$transient_duration = MINUTE_IN_SECONDS * 10;
+		set_transient( $transient_key, $otp, $transient_duration );
+
+		// Send The Response
+		return rest_ensure_response([
+			'success' => true,
+			'phone'   => $phone,
+			'otp'     => $otp,
+			'message' => __( 'The OTP has been sent successfuly', 'oxynate' )
+		]);
+	}
+
+	/**
+	 * Send OTP
+	 * 
+	 * @return array|WP_Error
+	 */
+	public function draft_send_otp( $request ) {
 		$settings = App_Settings::get_options();
 		$phone    = $request->get_param('phone');
 
