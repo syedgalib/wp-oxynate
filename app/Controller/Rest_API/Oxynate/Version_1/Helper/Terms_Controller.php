@@ -302,10 +302,10 @@ abstract class Terms_Controller extends Rest_Base {
 
 		// Store pagination values for headers then unset for count query.
 		$per_page = (int) $prepared_args['number'];
-		$page     = ceil( ( ( (int) $prepared_args['offset'] ) / $per_page ) + 1 );
+		$page     = ( $per_page < 1 ) ? 1 : ceil( ( ( (int) $prepared_args['offset'] ) / $per_page ) + 1 );
 
 		$response->header( 'X-WP-Total', (int) $total_terms );
-		$max_pages = ceil( $total_terms / $per_page );
+		$max_pages = ( $per_page < 1 ) ? 1 : ceil( $total_terms / $per_page );
 		$response->header( 'X-WP-TotalPages', (int) $max_pages );
 
 		$base = add_query_arg( $request->get_query_params(), rest_url( '/' . $this->namespace . '/' . $this->rest_base ) );
@@ -677,6 +677,10 @@ abstract class Terms_Controller extends Rest_Base {
 		$params = parent::get_collection_params();
 
 		$params['context']['default'] = 'view';
+
+		if ( isset( $params['per_page'] ) ) {
+			$params['per_page']['minimum'] = -1;
+		}
 
 		$params['exclude']    = array(
 			'description'       => __( 'Ensure result set excludes specific IDs.', 'wp-oxynate' ),
